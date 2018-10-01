@@ -18,8 +18,8 @@ new const g_szEquipMenuCmds[][] =
 #include <csdm>
 #include <fakemeta>
 
-#if AMXX_VERSION_NUM < 183
-	#include <colorchat>
+#if AMXX_VERSION_NUM < 200
+	#error ERROR: You AMXX version less then 1.10.0.5233!
 #endif
 
 #define IsPlayerNotUsed(%1)		(g_iPreviousSecondary[%1] == INVALID_INDEX && g_iPreviousPrimary[%1] == INVALID_INDEX)
