@@ -27,7 +27,7 @@ new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1
 
 public plugin_init()
 {
-	register_plugin("CSDM Misc [f]", CSDM_VERSION_STRING, "Vaqtincha")
+	register_plugin("CSDM Misc", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
 
 	for(new i = 0; i < sizeof(g_szWeaponList); i++)
 	{

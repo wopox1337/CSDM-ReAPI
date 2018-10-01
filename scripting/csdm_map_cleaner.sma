@@ -75,7 +75,7 @@ public CSDM_ConfigurationLoad(const ReadTypes:iReadAction)
 
 public plugin_init()
 {
-	register_plugin("CSDM Map Cleaner", CSDM_VERSION_STRING, "Vaqtincha")	
+	register_plugin("CSDM Map Cleaner", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")	
 
 	if(g_iFwdEntitySpawn) {
 		unregister_forward(FM_Spawn, g_iFwdEntitySpawn)

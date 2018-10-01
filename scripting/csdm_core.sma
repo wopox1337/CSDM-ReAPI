@@ -76,7 +76,7 @@ public plugin_end()
 
 public plugin_init()
 {
-	register_plugin(CSDM_PLUGIN_NAME, CSDM_VERSION_STRING, "Vaqtincha")
+	register_plugin(CSDM_PLUGIN_NAME, CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
 	register_cvar("csdm_version", CSDM_VERSION_STRING, FCVAR_SPONLY|FCVAR_UNLOGGED)
 
 	RegisterHookChain(RG_CSGameRules_RestartRound, "CSGameRules_RestartRound", .post = false)
@@ -418,7 +418,7 @@ LoadSettings(const ReadTypes:iReadAction = CFG_READ)
 
 OpenConfigFile()
 {
-	new szConfigDir[MAX_CONFIG_PATH_LEN], szConfigFile[MAX_CONFIG_PATH_LEN + 32]
+	new szConfigDir[PLATFORM_MAX_PATH], szConfigFile[PLATFORM_MAX_PATH + 32]
 	new szMapName[32], szMapPrefix[6], pFile
 
 	get_localinfo("amxx_configsdir", szConfigDir, charsmax(szConfigDir))

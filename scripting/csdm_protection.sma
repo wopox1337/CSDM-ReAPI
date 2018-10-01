@@ -39,7 +39,7 @@ new Float:g_flTeamColors[TeamName][color_e] =
 
 public plugin_init()
 {
-	register_plugin("CSDM Protection", CSDM_VERSION_STRING, "Vaqtincha")
+	register_plugin("CSDM Protection", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
 
 	if(g_flProtectionTime > 0.0 && g_bBlockDamage) {
 		RegisterHookChain(RG_CSGameRules_FPlayerCanTakeDamage, "CSGameRules_FPlayerCanTakeDmg", .post = false)

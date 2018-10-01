@@ -70,7 +70,9 @@ new bool:g_bHasMapParameters, mp_maxmoney
 
 public plugin_init()
 {
-	register_plugin("CSDM Equip Manager", CSDM_VERSION_STRING, "Vaqtincha")
+	register_plugin("CSDM Equip Manager", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
+	register_dictionary("csdm_reapi.txt")
+	register_dictionary("common.txt")
 	
 	for(new i = 0; i < sizeof(g_szEquipMenuCmds)-1; i++)
 	{
@@ -185,7 +187,7 @@ public ClCmd_EnableMenu(const pPlayer)
 
 	if(IsViewingMenu(pPlayer))
 	{
-		client_print_color(pPlayer, print_team_red, "^4[CSDM] ^3Equip menu already opened!")
+		client_print_color(pPlayer, print_team_red, "^4[CSDM] %L", pPlayer, "MENU_ALREADY_OPENED")
 		return PLUGIN_HANDLED
 	}
 	
@@ -202,11 +204,11 @@ public ClCmd_EnableMenu(const pPlayer)
 
 	if(g_bOpenMenu[pPlayer])
 	{
-		client_print_color(pPlayer, print_team_red, "^4[CSDM] ^3Your equip menu is already enabled!")
+		client_print_color(pPlayer, print_team_red, "^4[CSDM] %L", pPlayer, "MENU_ALREADY_ENABLED")
 		return PLUGIN_HANDLED
 	}
 
-	client_print_color(pPlayer, print_team_blue, "^4[CSDM] ^3Gun menu will be re-enabled next spawn.")
+	client_print_color(pPlayer, print_team_blue, "^4[CSDM] %L", pPlayer, "MENU_WILL_BE_OPENED")
 	g_bOpenMenu[pPlayer] = true
 
 	return PLUGIN_HANDLED
@@ -281,7 +283,7 @@ public CBasePlayer_HasRestrictItem(const pPlayer, const ItemID:iItemId, const It
 
 	if(g_flFreeBuyTime > 0.0 && g_flPlayerBuyTime[pPlayer] < get_gametime()) 
 	{
-		client_print(pPlayer, print_center, "%0.f seconds have passed. ^rYou can't buy anything now!", g_flFreeBuyTime)
+		client_print(pPlayer, print_center, "FREEBUYTIME_PASSED", g_flFreeBuyTime)
 		SetHookChainReturn(ATYPE_INTEGER, true)
 		return HC_SUPERCEDE
 	}
@@ -320,7 +322,7 @@ public EquipMenuHandler(const pPlayer, const iMenu, const iItem)
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
 		
-			client_print_color(pPlayer, print_team_grey, "^4[CSDM] ^3say ^1guns ^3to re-enable the gun menu.")
+			client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_HELP_GUNS")
 			g_bOpenMenu[pPlayer] = false
 		}
 		case 4:
@@ -545,24 +547,24 @@ WeaponIdType:GetWeaponIndex(const szClassName[])
 
 BuildMenus()
 {
-	g_iEquipMenuID = MenuCrate("Equip Menu", "EquipMenuHandler", bool:(!g_iNumSecondary && !g_iNumPrimary))
+	g_iEquipMenuID = MenuCrate("EQUIP_MENU", "EquipMenuHandler", bool:(!g_iNumSecondary && !g_iNumPrimary))
 	g_iEquipMenuCB = menu_makecallback("EquipMenuCallback")
 
-	menu_additem(g_iEquipMenuID, "New weapons", "1", .callback = g_iEquipMenuCB)
-	menu_additem(g_iEquipMenuID, "Previous setup", "2", .callback = g_iEquipMenuCB)
-	menu_additem(g_iEquipMenuID, "2+Don't show menu again^n", "3", .callback = g_iEquipMenuCB)
-	menu_additem(g_iEquipMenuID, "Random selection", "4", .callback = g_iEquipMenuCB)
+	menu_additem(g_iEquipMenuID, "NEW_WEAPONS", "1", .callback = g_iEquipMenuCB)
+	menu_additem(g_iEquipMenuID, "PREVIOUS_SETUP", "2", .callback = g_iEquipMenuCB)
+	menu_additem(g_iEquipMenuID, "DONT_SHOW_MENU_AGAIN", "3", .callback = g_iEquipMenuCB)
+	menu_additem(g_iEquipMenuID, "RANDOM_SELECTION", "4", .callback = g_iEquipMenuCB)
 
-	g_iSecondaryMenuID = MenuCrate("Secondary Weapons", "SecondaryMenuHandler")
+	g_iSecondaryMenuID = MenuCrate("SEC_WEAPONS", "SecondaryMenuHandler")
 	AddItemsToMenu(g_iSecondaryMenuID, g_aArrays[Secondary], g_iNumSecondary)
 
-	g_iPrimaryMenuID = MenuCrate("Primary Weapons", "PrimaryMenuHandler")
+	g_iPrimaryMenuID = MenuCrate("PRI_WEAPONS", "PrimaryMenuHandler")
 	AddItemsToMenu(g_iPrimaryMenuID, g_aArrays[Primary], g_iNumPrimary)
 }
 
 MenuCrate(const szTitle[], const szHandler[], const bAddExitKey = false)
 {
-	new iMenu = menu_create(szTitle, szHandler)
+	new iMenu = menu_create(szTitle, szHandler, .ml = true)
 	if(!bAddExitKey) {
 		menu_setprop(iMenu, MPROP_EXIT, MEXIT_NEVER)
 	}

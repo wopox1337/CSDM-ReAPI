@@ -1,6 +1,7 @@
 // Copyright © 2018 wopox1337 (Originally Vaqtincha)
 
 #include <amxmodx>
+#include <amxmisc>
 #include <csdm>
 #include <fakemeta>
 #include <xs>
@@ -52,7 +53,7 @@ new Float:g_vecLastOrigin[MAX_CLIENTS + 1][coord_e],
 	Float:g_vecLastVAngles[MAX_CLIENTS + 1][coord_e]
 
 new g_pAimedEntity[MAX_CLIENTS + 1], g_iLastSpawnIndex[MAX_CLIENTS + 1], bool:g_bFirstSpawn[MAX_CLIENTS + 1]
-new g_szSpawnDirectory[MAX_CONFIG_PATH_LEN], g_szSpawnFile[MAX_CONFIG_PATH_LEN + 32], g_szMapName[32]
+new g_szSpawnDirectory[PLATFORM_MAX_PATH], g_szSpawnFile[PLATFORM_MAX_PATH + 32], g_szMapName[32]
 new g_iTotalPoints, g_iEditorMenuID, bool:g_bEditSpawns, bool:g_bNotSaved
 new g_iGravity, g_iMaxPlayers
 
@@ -63,7 +64,7 @@ public plugin_precache()
 
 public plugin_init()
 {
-	register_plugin("CSDM Spawn Manager", CSDM_VERSION_STRING, "Vaqtincha")
+	register_plugin("CSDM Spawn Manager", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
 	register_concmd("csdm_edit_spawns", "ConCmd_EditSpawns", ADMIN_MAP, "Edits spawn configuration")
 	register_clcmd("nightvision", "ClCmd_Nightvision") 
 	register_menucmd((g_iEditorMenuID = register_menuid(g_szEditorMenuTitle)), MENU_KEY_BITS, "EditorMenuHandler")
@@ -137,18 +138,18 @@ public ClCmd_Nightvision(const pPlayer, const level)
 
 public ConCmd_EditSpawns(const pPlayer, const level)
 {
-	if(!is_user_alive(pPlayer) || ~get_user_flags(pPlayer) & level)
+	if(!is_user_alive(pPlayer) || !access(pPlayer, level))
 		return PLUGIN_HANDLED
 
 	if(g_bEditSpawns)
 	{
 		if(g_bNotSaved && SavePoints() == FAILED_CREATE)
 		{
-			console_print(pPlayer, "[CSDM] Autosave is failed. Please try again")
+			console_print(pPlayer, "[CSDM] %L", pPlayer, "AUTOSAVE_IS_FAILED")
 			return ShowEditorMenu(pPlayer)
 		}
 
-		console_print(pPlayer, "[CSDM] Spawn editor disabled")
+		console_print(pPlayer, "[CSDM] %L", pPlayer, "SPAWN_EDITOR_DISABLED")
 		CloseOpenedMenu(pPlayer)
 		RemoveAllSpotEntitys()
 		g_bEditSpawns = false
@@ -157,7 +158,7 @@ public ConCmd_EditSpawns(const pPlayer, const level)
 		return PLUGIN_HANDLED
 	}
 
-	console_print(pPlayer, "[CSDM] Spawn editor enabled")
+	console_print(pPlayer, "[CSDM] %L", pPlayer, "SPAWN_EDITOR_ENABLED")
 	MakeAllSpotEntitys()
 	g_bEditSpawns = true
 
@@ -221,7 +222,7 @@ public ShowEditorMenu(const pPlayer)
 {
 	new szMenu[512], Float:vecOrigin[coord_e], bitKeys, iLen
 	get_entvar(pPlayer, var_origin, vecOrigin)
-	iLen = formatex(szMenu, charsmax(szMenu), "\ySpawn Editor^n^n")
+	iLen = formatex(szMenu, charsmax(szMenu), "%L", pPlayer, "SPAWN_EDITOR")
 	bitKeys |= g_bNotSaved ? (MENU_KEY_2|MENU_KEY_5|MENU_KEY_6|MENU_KEY_8) : (MENU_KEY_2|MENU_KEY_5|MENU_KEY_6)
 	
 	if(!IsVectorZero(g_vecLastOrigin[pPlayer])) {
@@ -263,7 +264,7 @@ public ShowEditorMenu(const pPlayer)
 	)
 
 	formatex(szMenu[iLen], charsmax(szMenu) - iLen, 
-		"^n\wTotal spawns: \y%d^n\wCurrent position: \rX \y%0.f \rY \y%0.f \rZ \y%0.f",
+		"%L \rX \y%0.f \rY \y%0.f \rZ \y%0.f", pPlayer, "SPAWNS_COUNT_AND_POSITION", 
 		g_iTotalPoints, vecOrigin[X], vecOrigin[Y], vecOrigin[Z]
 	)
 
@@ -288,7 +289,7 @@ public EditorMenuHandler(const pPlayer, iKey)
 			if(g_pAimedEntity[pPlayer] == NULLENT)
 			{
 				if(!SetAimedEntity(pPlayer)) {
-					client_print(pPlayer, print_center, "Spawn entity not found!")
+					client_print(pPlayer, print_center, "%L", pPlayer, "SPAWN_ENTITY_NOT_FOUND")
 				}
 			}
 			else
@@ -591,7 +592,7 @@ bool:SetAimedEntity(const pPlayer, pEntity = NULLENT, bool:bPrint = true)
 
 		g_pAimedEntity[pPlayer] = pEntity
 		if(bPrint) {
-			client_print(pPlayer, print_center, "Aimed entity index %d", g_pAimedEntity[pPlayer])
+			client_print(pPlayer, print_center, "%L", pPlayer, "AIMED_ENTITY_INDEX", g_pAimedEntity[pPlayer])
 		}
 		
 		g_vecLastOrigin[pPlayer][X] = g_vecLastOrigin[pPlayer][Y] = g_vecLastOrigin[pPlayer][Z] = 0.0
