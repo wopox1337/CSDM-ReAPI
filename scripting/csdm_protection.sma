@@ -8,10 +8,6 @@
 #define PlayerTask(%1)				(%1 + PROTECTION_TASK_ID)
 #define GetPlayerByTaskID(%1)		(%1 - PROTECTION_TASK_ID)
 
-
-const Float:MAX_ALPHA_VALUE = 30.0
-const Float:MAX_PROTECTION_TIME = 25.0
-
 const PROTECTION_TASK_ID = 216897
 
 enum color_e { Float:R, Float:G, Float:B }
@@ -27,7 +23,7 @@ new bool:g_bIsProtected[MAX_CLIENTS + 1]
 new g_iMaxPlayers
 
 new g_szSpriteName[18] = "suithelmet_full" // max lenght = 16
-new Float:g_flRenderAlpha = 10.0, Float:g_flProtectionTime = 2.0, bool:g_bBlockDamage = true
+new Float:g_flRenderAlpha = 10.0, bool:g_bBlockDamage = true, Float: g_fImmunityTime;
 new Float:g_flTeamColors[TeamName][color_e] = 
 {
 	{0.0, 0.0, 0.0},
@@ -36,32 +32,25 @@ new Float:g_flTeamColors[TeamName][color_e] =
 	{0.0, 0.0, 0.0}
 }
 
+public OnConfigsExecuted()
+{
+	set_cvar_float("mp_respawn_immunitytime", g_fImmunityTime)
+}
 
 public plugin_init()
 {
 	register_plugin("CSDM Protection", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
 
-	if(g_flProtectionTime > 0.0 && g_bBlockDamage) {
-		RegisterHookChain(RG_CSGameRules_FPlayerCanTakeDamage, "CSGameRules_FPlayerCanTakeDmg", .post = false)
+	if(g_fImmunityTime > 0.0) {
+		if(g_bBlockDamage)
+			RegisterHookChain(RG_CSGameRules_FPlayerCanTakeDamage, "CSGameRules_FPlayerCanTakeDmg", .post = false)
+
+		RegisterHookChain(RG_CBasePlayer_SetSpawnProtection, "CBasePlayer_SetSpawnProtection", .post = true)
+		RegisterHookChain(RG_CBasePlayer_RemoveSpawnProtection, "CBasePlayer_RemoveSpawnProtection", .post = true)
+
 	}
 	
 	g_iMaxPlayers = get_maxplayers()
-}
-
-#if AMXX_VERSION_NUM < 183
-public client_disconnect(pPlayer)
-#else
-public client_disconnected(pPlayer)
-#endif
-{
-	g_bIsProtected[pPlayer] = false
-	remove_task(PlayerTask(pPlayer))
-}
-
-public client_putinserver(pPlayer)
-{
-	g_bIsProtected[pPlayer] = false
-	remove_task(PlayerTask(pPlayer))
 }
 
 public CSDM_Initialized(const szVersion[])
@@ -75,18 +64,14 @@ public CSDM_ConfigurationLoad(const ReadTypes:iReadAction)
 	CSDM_RegisterConfig("protection", "ReadCfg")
 }
 
-public CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
+public CBasePlayer_SetSpawnProtection(const pPlayer, Float: time)
 {
-	if(g_flProtectionTime > 0.0) {
-		SetProtection(pPlayer)
-	}
+	SetEffects(pPlayer, time)
 }
 
-public CSDM_PlayerKilled(const pVictim, const pKiller, const HitBoxGroup:iLastHitGroup)
+public CBasePlayer_RemoveSpawnProtection(const pPlayer)
 {
-	if(g_bIsProtected[pVictim]) {
-		RemoveProtection(pVictim)
-	}
+	RemoveEffects(pPlayer)
 }
 
 public CSGameRules_FPlayerCanTakeDmg(const pPlayer, const pAttacker)
@@ -103,11 +88,6 @@ public CSGameRules_FPlayerCanTakeDmg(const pPlayer, const pAttacker)
 	return HC_CONTINUE
 }
 
-public TaskProtectionEnd(const iTaskID)
-{
-	RemoveProtection(GetPlayerByTaskID(iTaskID))
-}
-
 public ReadCfg(const szLineData[], const iSectionID)
 {
 	new szKey[MAX_KEY_LEN], szValue[MAX_VALUE_LEN], szSign[2]
@@ -116,7 +96,7 @@ public ReadCfg(const szLineData[], const iSectionID)
 
 	if(equali(szKey, "protection_time"))
 	{
-		g_flProtectionTime = floatclamp(str_to_float(szValue), 0.0, MAX_PROTECTION_TIME)
+		g_fImmunityTime = str_to_float(szValue)
 	}
 	else if(equali(szKey, "block_damage"))
 	{
@@ -146,18 +126,14 @@ public ReadCfg(const szLineData[], const iSectionID)
 	}
 	else if(equali(szKey, "render_alpha"))
 	{
-		g_flRenderAlpha = floatclamp(str_to_float(szValue), 0.0, MAX_ALPHA_VALUE)
+		g_flRenderAlpha = str_to_float(szValue)
 	}
 }
 
-SetProtection(const pPlayer)
+SetEffects(const pPlayer, Float: time)
 {
-	new iTaskID = PlayerTask(pPlayer)
-	remove_task(iTaskID)
-	set_task(g_flProtectionTime, "TaskProtectionEnd", iTaskID)
-
-	set_entvar(pPlayer, var_takedamage, DAMAGE_NO)
-	g_bIsProtected[pPlayer] = true
+// https://github.com/s1lentq/ReGameDLL_CS/blob/bc2c3176e46e2c32ebc0110e7df879ea7ddbfafa/regamedll/dlls/player.cpp#L9532
+	set_entvar(pPlayer, var_rendermode, kRenderFxNone)
 
 	new TeamName:iTeam = get_member(pPlayer, m_iTeam)
 	if(!g_flTeamColors[iTeam][R] && !g_flTeamColors[iTeam][G] && !g_flTeamColors[iTeam][B])
@@ -169,25 +145,20 @@ SetProtection(const pPlayer)
 
 		rg_set_rendering(pPlayer, kRenderFxGlowShell, flColor, g_flRenderAlpha)
 	}
-	else
-		rg_set_rendering(pPlayer, kRenderFxGlowShell, g_flTeamColors[iTeam], g_flRenderAlpha)
+	else rg_set_rendering(pPlayer, kRenderFxGlowShell, g_flTeamColors[iTeam], g_flRenderAlpha)
 
-	if(g_szSpriteName[0] && g_flProtectionTime >= 1.5) {
+	if(g_szSpriteName[0] && time >= 1.5) {
 		SendStatusIcon(pPlayer, STATUSICON_FLASH)
 	}
 }
 
-RemoveProtection(const pPlayer)
+RemoveEffects(const pPlayer)
 {
-	remove_task(PlayerTask(pPlayer))
-	g_bIsProtected[pPlayer] = false
-
 	if(is_user_connected(pPlayer))
 	{
-		set_entvar(pPlayer, var_takedamage, DAMAGE_AIM)
 		rg_set_rendering(pPlayer)
 
-		if(g_szSpriteName[0] && g_flProtectionTime >= 2.0) {
+		if(g_szSpriteName[0]) {
 			SendStatusIcon(pPlayer)
 		}
 	}
