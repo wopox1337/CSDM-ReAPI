@@ -1,4 +1,4 @@
-// Copyright © 2016 Vaqtincha
+// Copyright © 2018 wopox1337 (Originally Vaqtincha)
 
 #include <amxmodx>
 #include <csdm>

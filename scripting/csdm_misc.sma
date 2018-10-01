@@ -1,4 +1,4 @@
-// Copyright © 2016 Vaqtincha
+// Copyright © 2018 wopox1337 (Originally Vaqtincha)
 
 #include <amxmodx>
 #include <hamsandwich>
@@ -8,17 +8,6 @@
 #define IsPlayer(%1)				(1 <= (%1) <= g_iMaxPlayers)
 
 const HideWeapon_Flags = 1 	// "HideWeapon" msg argument
-
-enum
-{
-	HIDEHUD_WEAPONS		=	(1<<0),
-	HIDEHUD_FLASHLIGHT	=	(1<<1),
-	HIDEHUD_ALL			=	(1<<2),
-	HIDEHUD_HEALTH		=	(1<<3),
-	HIDEHUD_TIMER		=	(1<<4),
-	HIDEHUD_MONEY		=	(1<<5),
-	HIDEHUD_CROSSHAIR	=	(1<<6)
-}
 
 new const g_szWeaponList[][] = 
 {
@@ -38,7 +27,7 @@ new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1
 
 public plugin_init()
 {
-	register_plugin("CSDM Misc", CSDM_VERSION_STRING, "Vaqtincha")
+	register_plugin("CSDM Misc [f]", CSDM_VERSION_STRING, "Vaqtincha")
 
 	for(new i = 0; i < sizeof(g_szWeaponList); i++)
 	{
