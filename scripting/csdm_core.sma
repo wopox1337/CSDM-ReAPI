@@ -5,6 +5,10 @@
 #include <fakemeta>
 
 
+#if AMXX_VERSION_NUM < 200
+	#error ERROR: You AMXX version less then 1.10.0.5233!
+#endif
+
 #define IsPlayer(%1)				(1 <= %1 <= g_iMaxPlayers)
 
 const Float:MIN_RESPAWN_TIME = 0.1
@@ -81,7 +85,6 @@ public plugin_init()
 
 	RegisterHookChain(RG_CSGameRules_RestartRound, "CSGameRules_RestartRound", .post = false)
 	RegisterHookChain(RG_CSGameRules_DeadPlayerWeapons, "CSGameRules_DeadPlayerWeapons", .post = false)
-	RegisterHookChain(RG_RoundEnd, "RoundEnd", .post = false)
 
 	RegisterHookChain(RG_CBasePlayer_Killed, "CSGameRules_PlayerKilled", .post = false)
 	RegisterHookChain(RG_CBasePlayer_Spawn, "CBasePlayer_Spawn", .post = true)
@@ -313,17 +316,6 @@ public CSGameRules_RestartRound()
 	}
 
 	ExecuteForward(g_eCustomForwards[iFwdRestartRound], g_iIgnoreReturn, bool:bIsNewGame)
-}
-
-public RoundEnd(WinStatus:status, ScenarioEventEndRound:event, Float:tmDelay)
-{
-	if(event != ROUND_GAME_COMMENCE && event != ROUND_GAME_RESTART)
-	{
-		SetHookChainReturn(ATYPE_INTEGER, false)
-		return HC_SUPERCEDE
-	}
-
-	return HC_CONTINUE
 }
 
 public EmitSound(const pEntity, const iChannel, const szSample[], Float:fVol, Float:fAttn, iFlags, iPitch)
