@@ -23,8 +23,8 @@
 	#include <reapi>
 #endif
 
-const CSDM_VERSION_NUM = 008
-stock const CSDM_VERSION_STRING[] = "0.0.8"
+const CSDM_VERSION_NUM = 010
+stock const CSDM_VERSION_STRING[] = "0.1.0"
 stock const CSDM_PLUGIN_NAME[] = "CSDM Core"
 
 stock const g_szMainDir[] = "csdm"
@@ -34,8 +34,6 @@ stock const g_szSpawnDir[] = "spawns"
 stock const g_szDefaultCfgFile[] = "config.ini"
 stock const g_szMainSection[] = "[settings]"
 
-// config
-const MAX_CONFIG_PATH_LEN =	128
 // configdata
 const MAX_LINE_LEN = 64
 const MAX_KEY_LEN = 32
