@@ -1,0 +1,32 @@
+name: CI ReAPI CSDM
+
+on: [push, pull_request]
+       
+jobs:
+  build:
+    name: My Job
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Compile with lastest AMXX 1.10 & ReAPI
+      env:
+        URL_AMXMODX: https://www.amxmodx.org/latest.php?os=linux&version=1.10&package=base
+        URL_REAPI: http://teamcity.rehlds.org/guestAuth/repository/download/Reapi_Linux/.lastSuccessful/release/reapi_amxx_i386.so?branch=master
+      run: |
+        sudo apt-get install gcc-multilib lib32stdc++6 -y
+
+        mkdir cstrike
+
+        curl -s $URL_AMXMODX -#| tar xvz
+	      cd addons/amxmodx && rm scripting/*.sma && rm plugins/*.amxx
+        
+        cd cstrike
+	      curl -o reapi.zip $URL_REAPI -#
+	      unzip reapi.zip && rm reapi.zip
+	      cd addons/amxmodx && rm scripting/*.sma
+        
+        cd addons/amxmodx/scripting/
+        chmod +x amxxpc32.so
+        chmod +x compile.sh
+        ./compile.sh
+
+
