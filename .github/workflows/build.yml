@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "15 0 */7 * *"
+
+jobs:
+  build:
+    name: Build plugins
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        amxmodx: ["1.9", "1.10"]
+
+      fail-fast: false
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v1
+
+      - name: Download AMXX && ReAPI and unpacking
+        env:
+          AMXMODX: ${{ matrix.amxmodx }}
+          URL_REAPI: https://github.com/s1lentq/reapi/releases/download/5.13.0.194/reapi_5.13.0.194-dev.zip
+        run: |
+          curl -s https://www.amxmodx.org/amxxdrop/$AMXMODX/$(curl https://www.amxmodx.org/amxxdrop/$AMXMODX/amxmodx-latest-base-linux) -# | tar xz
+          curl -oL reapi.zip $URL_REAPI -# && unzip reapi.zip && rm reapi.zip
+          cd addons/amxmodx && rm scripting/*.sma && rm plugins/*.amxx
+
+      - name: Compile plugins AMXX Version
+        run: |
+          cp -Rf ./amxmodx/* ./addons/amxmodx/
+          cd addons/amxmodx/scripting
+          chmod +x amxxpc32.so
+          chmod +x compile.sh
+          chmod +x amxxpc
+          for sourcefile in *.sma; do\
+            echo -n "Compiling $sourcefile ...";\
+            ./amxxpc -d3 $sourcefile -o../plugins/$(echo $sourcefile | sed -e 's/\.sma$/.amxx/') || exit 1;\
+          done
