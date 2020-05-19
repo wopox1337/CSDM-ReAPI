@@ -1,6 +1,8 @@
 ![enter image description here](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11oXQFybzvtvmso2SeJqs_jHxFuu-iq5iORrjIGUUQDhE3vFxVg)
 
-# Readme language: [ENG](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README.md) | [**RUS**](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README_ru.md)
+# Readme language: [ENG](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README.md) | [RUS](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README_ru.md)
+
+[![Actions Status](https://github.com/DevCSru/CSDM-ReAPI/workflows/Build/badge.svg)](https://github.com/DevCSru/CSDM-ReAPI/actions)</br>
 
 # Counter Strike Deathmatch [ReAPI версия]
 #### Описание:
