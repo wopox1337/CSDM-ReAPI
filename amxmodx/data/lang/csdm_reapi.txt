@@ -23,7 +23,7 @@ SPAWNS_COUNT_AND_POSITION = ^n\wTotal spawns: \y%d^n\wCurrent position:
 [ru]
 EQUIP_MENU = Меню вооружения
 NEW_WEAPONS = Новое оружие
-PREVIOUS_SETUP = Пердыдущее оружие
+PREVIOUS_SETUP = Предыдущее оружие
 DONT_SHOW_MENU_AGAIN = 2 + Не показывать больше меню^n
 RANDOM_SELECTION = Случайный выбор
 SEC_WEAPONS = Дополнительное оружие
