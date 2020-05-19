@@ -25,7 +25,7 @@ jobs:
           URL_REAPI: https://github.com/s1lentq/reapi/releases/download/5.13.0.194/reapi_5.13.0.194-dev.zip
         run: |
           curl -s https://www.amxmodx.org/amxxdrop/$AMXMODX/$(curl https://www.amxmodx.org/amxxdrop/$AMXMODX/amxmodx-latest-base-linux) -# | tar xz
-          curl -oL reapi.zip $URL_REAPI -# && unzip reapi.zip && rm reapi.zip
+          curl -OL $URL_REAPI -# && unzip reapi_*-dev.zip && rm reapi_*-dev.zip
           cd addons/amxmodx && rm scripting/*.sma && rm plugins/*.amxx
 
       - name: Compile plugins AMXX Version
