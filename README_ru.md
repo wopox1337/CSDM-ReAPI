@@ -1,4 +1,7 @@
 ![enter image description here](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11oXQFybzvtvmso2SeJqs_jHxFuu-iq5iORrjIGUUQDhE3vFxVg)
+
+# Readme language: [ENG](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README.md) | [**RUS**](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README_ru.md)
+
 # Counter Strike Deathmatch [ReAPI версия]
 #### Описание:
 > Игроки имеют бесконечное количество респаунов с полной броней, и будут

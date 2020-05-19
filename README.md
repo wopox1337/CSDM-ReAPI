@@ -1,5 +1,8 @@
 ![enter image description here](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11oXQFybzvtvmso2SeJqs_jHxFuu-iq5iORrjIGUUQDhE3vFxVg)
-# Counter Strike Deathmatch [ReAPI version]
+
+# Readme language: [**ENG**](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README.md) |  [RUS](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README_ru.md)
+
+## Counter Strike Deathmatch [ReAPI version]
 #### Description:
 > Players have an infinite number of respawns with full armor, and will
 > return within seconds of their death. Once the player is reborn, the
