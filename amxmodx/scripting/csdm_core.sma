@@ -32,7 +32,12 @@ enum forwardlist_e
 	iFwdGamemodeChanged
 }
 
-new HookChain:g_hTraceAttack
+new HookChain:g_hCSGameRules_RestartRound,
+	HookChain:g_hCSGameRules_DeadPlayerWeapons,
+	HookChain:g_hCBasePlayer_Killed,
+	HookChain:g_hCBasePlayer_Spawn,
+	HookChain:g_hCBasePlayer_TraceAttack
+
 new Array:g_aConfigData, Trie:g_tConfigSections, Trie:g_tConfigValues
 new g_eCustomForwards[forwardlist_e]
 new g_iIgnoreReturn, g_iMaxPlayers, g_iFwdEmitSound, g_iTotalItems
@@ -83,18 +88,51 @@ public plugin_init()
 	register_plugin(CSDM_PLUGIN_NAME, CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
 	register_cvar("csdm_version", CSDM_VERSION_STRING, FCVAR_SPONLY|FCVAR_UNLOGGED)
 
-	RegisterHookChain(RG_CSGameRules_RestartRound, "CSGameRules_RestartRound", .post = false)
-	RegisterHookChain(RG_CSGameRules_DeadPlayerWeapons, "CSGameRules_DeadPlayerWeapons", .post = false)
+	g_hCSGameRules_RestartRound = RegisterHookChain(RG_CSGameRules_RestartRound, "CSGameRules_RestartRound", .post = false)
+	g_hCSGameRules_DeadPlayerWeapons = RegisterHookChain(RG_CSGameRules_DeadPlayerWeapons, "CSGameRules_DeadPlayerWeapons", .post = false)
 
-	RegisterHookChain(RG_CBasePlayer_Killed, "CSGameRules_PlayerKilled", .post = false)
-	RegisterHookChain(RG_CBasePlayer_Spawn, "CBasePlayer_Spawn", .post = true)
-	DisableHookChain(g_hTraceAttack = RegisterHookChain(RG_CBasePlayer_TraceAttack, "CBasePlayer_TraceAttack", .post = false))
+	g_hCBasePlayer_Killed = RegisterHookChain(RG_CBasePlayer_Killed, "CSGameRules_PlayerKilled", .post = false)
+	g_hCBasePlayer_Spawn = RegisterHookChain(RG_CBasePlayer_Spawn, "CBasePlayer_Spawn", .post = true)
+	DisableHookChain(g_hCBasePlayer_TraceAttack = RegisterHookChain(RG_CBasePlayer_TraceAttack, "CBasePlayer_TraceAttack", .post = false))
 
 	set_msg_block(get_user_msgid("HudTextArgs"), BLOCK_SET)
 	set_msg_block(get_user_msgid("ClCorpse"), BLOCK_SET)
 
 	g_iMaxPlayers = get_maxplayers()
 	ExecuteForward(g_eCustomForwards[iFwdInitialized], g_iIgnoreReturn, CSDM_VERSION_STRING)
+}
+
+public plugin_pause()
+{
+	DisableHookChain(g_hCSGameRules_RestartRound)
+	DisableHookChain(g_hCSGameRules_DeadPlayerWeapons)
+	DisableHookChain(g_hCBasePlayer_Killed)
+	DisableHookChain(g_hCBasePlayer_Spawn)
+	DisableHookChain(g_hCBasePlayer_TraceAttack)
+
+	if(g_iFwdEmitSound)
+	{
+		unregister_forward(FM_EmitSound, g_iFwdEmitSound, .post = false)
+		g_iFwdEmitSound = 0
+	}
+	
+	set_msg_block(get_user_msgid("HudTextArgs"), BLOCK_NOT)
+	set_msg_block(get_user_msgid("ClCorpse"), BLOCK_NOT)
+}
+
+public plugin_unpause()
+{
+	EnableHookChain(g_hCSGameRules_RestartRound)
+	EnableHookChain(g_hCSGameRules_DeadPlayerWeapons)
+	EnableHookChain(g_hCBasePlayer_Killed)
+	EnableHookChain(g_hCBasePlayer_Spawn)
+	EnableHookChain(g_hCBasePlayer_TraceAttack)
+
+	if(g_bBlockGunpickupSound)
+		g_iFwdEmitSound = register_forward(FM_EmitSound, "EmitSound", ._post = false)
+
+	set_msg_block(get_user_msgid("HudTextArgs"), BLOCK_SET)
+	set_msg_block(get_user_msgid("ClCorpse"), BLOCK_SET)
 }
 
 new iEquipManId, iEquipManGFuncId, iEquipManSFuncId
@@ -466,9 +504,9 @@ PluginCallFunc(const eArrayData[config_s], const szLineData[])
 CheckForwards()
 {
 	if(g_iGamemode != NORMAL_HIT)
-		EnableHookChain(g_hTraceAttack)
+		EnableHookChain(g_hCBasePlayer_TraceAttack)
 	else
-		DisableHookChain(g_hTraceAttack)
+		DisableHookChain(g_hCBasePlayer_TraceAttack)
 
 	if(g_bBlockGunpickupSound && !g_iFwdEmitSound)
 	{
