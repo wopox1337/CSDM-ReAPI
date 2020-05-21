@@ -33,18 +33,19 @@ new const g_szMapEntityList[][] =
 	"info_hostage_rescue",
 	"func_vip_safetyzone",
 	"info_vip_start",
-	"hostage_entity",
 	"monster_scientist",
 	"func_escapezone",
-	"func_buyzone",
-	"armoury_entity",
-	"game_player_equip",
-	"player_weaponstrip"
+	"func_buyzone"
 }
 
 new Trie:g_tMapEntitys, g_iFwdEntitySpawn, g_iMaxPlayers, g_iFwdSetModel
 new g_bitRemoveObjects, bool:g_bRemoveWeapons, bool:g_bExcludeBomb
-new HamHook:g_hWeaponBoxSpawn, HamHook:g_hShieldSpawn
+new HamHook:g_hWeaponBoxSpawn,
+	HamHook:g_hShieldSpawn,
+	HamHook:g_hCGamePlayerEquip_Use,
+	HamHook:g_hCStripWeapons_Use
+new HookChain: g_hCSGameRules_CleanUpMap
+
 
 public plugin_precache()
 {
@@ -55,7 +56,7 @@ public plugin_precache()
 		TrieSetCell(g_tMapEntitys, g_szMapEntityList[i], i)
 	}
 
-	g_iFwdEntitySpawn = register_forward(FM_Spawn, "Entity_Spawn")
+	//g_iFwdEntitySpawn = register_forward(FM_Spawn, "Entity_Spawn")
 
 	if(g_bitRemoveObjects & func_buyzone) {
 		CreateBuyZone()
@@ -86,8 +87,13 @@ public plugin_init()
 	
 	DisableHamForward(g_hWeaponBoxSpawn = RegisterHam(Ham_Spawn, "weaponbox", "CWeaponBox_Spawn", .Post = true))
 	DisableHamForward(g_hShieldSpawn = RegisterHam(Ham_Spawn, "weapon_shield", "CWShield_Spawn", .Post = true))
+	DisableHamForward(g_hCGamePlayerEquip_Use = RegisterHam(Ham_Use, "game_player_equip", "CGamePlayerEquip_Use_Pre", .Post = false))
+	DisableHamForward(g_hCStripWeapons_Use = RegisterHam(Ham_Use, "player_weaponstrip", "CStripWeapons_Use_Pre", .Post = false))
+	DisableHookChain(g_hCSGameRules_CleanUpMap = RegisterHookChain(RG_CSGameRules_CleanUpMap, "CSGameRules_CleanUpMap", .post = true))
 
 	g_iMaxPlayers = get_maxplayers()
+
+	MapEntities_Toggle()
 }
 
 public plugin_cfg()
@@ -130,6 +136,76 @@ public Entity_SetModel(const pEntity, const szModel[]) <SetModel_Enabled>
 public Entity_SetModel(const pEntity, const szModel[]) <SetModel_Disabled>
 {
 	return FMRES_IGNORED
+}
+
+public plugin_pause()
+{
+	MapEntities_Toggle(true)
+}
+
+public plugin_unpause()
+{
+	MapEntities_Toggle(false)
+}
+
+MapEntities_Toggle(bEnable = false)
+{
+	for(new i; i < sizeof g_szMapEntityList; i++)
+	{
+		new entity = NULLENT;
+
+		while(( entity = rg_find_ent_by_class(entity, g_szMapEntityList[i], true) ))
+			set_entvar(entity, var_solid, bEnable ? SOLID_TRIGGER : SOLID_NOT)
+    }
+
+	if(bEnable)
+	{
+		DisableHamForward(g_hCGamePlayerEquip_Use)
+		DisableHamForward(g_hCStripWeapons_Use)
+		DisableHamForward(g_hWeaponBoxSpawn)
+		DisableHamForward(g_hShieldSpawn)
+		DisableHookChain(g_hCSGameRules_CleanUpMap)
+	}
+	else
+	{
+		EnableHamForward(g_hCGamePlayerEquip_Use)
+		EnableHamForward(g_hCStripWeapons_Use)
+		EnableHamForward(g_hWeaponBoxSpawn)
+		EnableHamForward(g_hShieldSpawn)
+		EnableHookChain(g_hCSGameRules_CleanUpMap)
+	}
+
+	set_cvar_num("mp_weapons_allow_map_placed", bEnable)
+	set_cvar_num("mp_give_player_c4", bEnable)
+}
+
+public CSGameRules_CleanUpMap()
+{
+	RemoveHostageEntities()
+}
+
+RemoveHostageEntities()
+{
+    new entity = NULLENT;
+
+    while((entity = rg_find_ent_by_class(entity, "hostage_entity"))) 
+	{
+        set_entvar(entity, var_health, 0.0);
+        set_entvar(entity, var_movetype, MOVETYPE_TOSS);
+        set_entvar(entity, var_deadflag, DEAD_DEAD);             
+        set_entvar(entity, var_effects, EF_NODRAW);
+        set_entvar(entity, var_solid, SOLID_NOT);
+    }
+}
+
+public CGamePlayerEquip_Use_Pre()
+{
+	return HAM_SUPERCEDE
+}
+
+public CStripWeapons_Use_Pre()
+{
+	return HAM_SUPERCEDE
 }
 
 public Entity_Spawn(const pEntity)
