@@ -16,7 +16,7 @@
 stock const CSDM_PLUGIN_NAME[] = "CSDM Core"
 
 #if !defined CSDM_VERSION
-  #define CSDM_VERSION "%CSDM_VERSION%"
+  #define CSDM_VERSION "%VERSION%"
 #endif
 
 stock const g_szMainDir[] = "csdm"
@@ -61,7 +61,7 @@ enum ColorTypes
 	DONT_CHANGE = 0,
 	RED,
 	BLUE,
-	GREY	
+	GREY
 }
 
 
@@ -103,7 +103,7 @@ forward CSDM_RestartRound(const bool:bNewGame)
 * @param pPlayer			Player id
 * @param bIsBot				Is player bot ?
 * @param iNumSpawns			Total spawns
-* 
+*
 * @note						alive check not necessary
 */
 forward CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
@@ -113,7 +113,7 @@ forward CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
 * @param pVictim			Victim id
 * @param pKiller			Killer id
 * @param iLastHitGroup		Last hitgroup
-* 
+*
 * @note						pKiller == 0 if player was killed by world
 */
 forward CSDM_PlayerKilled(const pVictim, const pKiller, const HitBoxGroup:iLastHitGroup)
@@ -129,14 +129,14 @@ forward CSDM_PlayerKilled(const pVictim, const pKiller, const HitBoxGroup:iLastH
 * @param szHandler 			Name of the handler function.
 * @param iSectionID 		section Index. (for multiple handler support)
 *
-* @return  					Index of section item. 
+* @return  					Index of section item.
 */
 native CSDM_RegisterConfig(const szSectionName[], const szHandler[])
 
 /** Gets config keyvalue.
 *
 * @param szKey				Keyname
-* @param szValue			The variable to store the value in.	
+* @param szValue			The variable to store the value in.
 * @param iLen				Lenght
 *
 * @return					true/false
@@ -166,7 +166,7 @@ native CSDM_GetEquipmode()
 /** Sets equip mode.
 *
 * @param iNewMode 			enum EquipTypes
-* 
+*
 * @noreturn
 */
 native CSDM_SetEquipmode(const EquipTypes:iNewMode)
@@ -205,7 +205,7 @@ const INVALID_WEAPONS_BS = ((1<<_:WEAPON_NONE)|(1<<_:WEAPON_GLOCK)|(1<<_:WEAPON_
 const INVALID_INDEX = -1
 const COLOR_CLIENT_INDEX = 34
 
-stock const g_szValidItemNames[][] = 
+stock const g_szValidItemNames[][] =
 {
 	"","weapon_p228","","weapon_scout","weapon_hegrenade","weapon_xm1014","weapon_c4",
 	"weapon_mac10","weapon_aug","weapon_smokegrenade","weapon_elite","weapon_fiveseven","weapon_ump45",
@@ -223,7 +223,7 @@ stock const g_szTeamNames[ColorTypes][] =
 	"SPECTATOR"
 }
 
-stock const g_szGamemodes[GameTypes][] = 
+stock const g_szGamemodes[GameTypes][] =
 {
 	"Normal Hit",
 	"Headshots Only",
@@ -231,7 +231,7 @@ stock const g_szGamemodes[GameTypes][] =
 	"Auto Healer"
 }
 
-stock const g_szEquipModes[EquipTypes][] = 
+stock const g_szEquipModes[EquipTypes][] =
 {
 	"Auto Equip",
 	"Equip Menu",
@@ -239,9 +239,9 @@ stock const g_szEquipModes[EquipTypes][] =
 	"Free buy"
 }
 
-stock const g_iMaxBPAmmo[any:WEAPON_P90 + 1] = 
+stock const g_iMaxBPAmmo[any:WEAPON_P90 + 1] =
 {
-	-1, 52, -1, 90, 1, 32, 1, 100, 90, 1, 120, 100, 100, 90, 90, 90, 
+	-1, 52, -1, 90, 1, 32, 1, 100, 90, 1, 120, 100, 100, 90, 90, 90,
 	100, 120, 30, 120, 200, 32, 90, 120, 90, 2, 35, 90, 90, -1, 100
 }
 
@@ -253,7 +253,7 @@ stock bool:CSDM_Running()
 
 	if(get_plugin(iPluginIndex, .status = szStatus, .len5 = charsmax(szStatus)) == INVALID_PLUGIN_ID)
 		return false
-	
+
 	// 'r' = "running", 'd' = "debug", 'p' = "paused", 's' = "stopped", 'e' = "error", 'b' = "bad load"
 	return bool:(szStatus[0] == 'r' || szStatus[0] == 'd')
 }
