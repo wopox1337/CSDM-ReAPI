@@ -72,7 +72,7 @@ public CSDM_PlayerKilled(const pVictim, const pKiller, const HitBoxGroup:iLastHi
 			case 1:
 			{
 				new pActiveWeapon = get_member(pKiller, m_pActiveItem)
-				if(pActiveWeapon > 0) {
+				if(is_entity(pActiveWeapon)) {
 					rg_instant_reload_weapons(pKiller, pActiveWeapon)
 				}
 			}
