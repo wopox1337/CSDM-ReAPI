@@ -80,6 +80,14 @@ enum ColorTypes
 */
 forward CSDM_Initialized(const szVersion[])
 
+/** Called when core requests a map prefix configuration file.
+*
+* @param szConfig			Config file
+* @param iSize				Size
+* @param szMapPrefix		Map prefix
+*/
+forward CSDM_GetConfigMapPrefixFile(szConfig[], const iSize, const szMapPrefix[])
+
 /** Called when core requests a configuration file.
 *
 * @param szConfig	Config file
