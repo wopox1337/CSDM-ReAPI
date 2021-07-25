@@ -10,8 +10,7 @@ new const g_szEquipMenuCmds[][] =
 	"csdm_guns",
 	"csdm_equipmenu",
 
-//============================
-	""
+	"cl_autobuy"
 }
 
 #include <amxmodx>
