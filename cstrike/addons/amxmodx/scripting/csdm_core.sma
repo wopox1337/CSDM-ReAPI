@@ -26,6 +26,7 @@ enum forwardlist_e
 	iFwdRestartRound,
 	iFwdPlayerSpawned,
 	iFwdPlayerKilled,
+	iFwdGetConfigFile,
 	iFwdConfigLoad,
 	iFwdInitialized,
 	iFwdExecuteCVarVal,
@@ -62,6 +63,7 @@ public plugin_precache()
 	g_eCustomForwards[iFwdRestartRound] = CreateMultiForward("CSDM_RestartRound", ET_IGNORE, FP_CELL)
 	g_eCustomForwards[iFwdPlayerSpawned] = CreateMultiForward("CSDM_PlayerSpawned", ET_IGNORE, FP_CELL, FP_CELL, FP_CELL)
 	g_eCustomForwards[iFwdPlayerKilled] = CreateMultiForward("CSDM_PlayerKilled", ET_CONTINUE, FP_CELL, FP_CELL, FP_CELL)
+	g_eCustomForwards[iFwdGetConfigFile] = CreateMultiForward("CSDM_GetConfigFile", ET_IGNORE, FP_ARRAY, FP_CELL)
 	g_eCustomForwards[iFwdConfigLoad] = CreateMultiForward("CSDM_ConfigurationLoad", ET_IGNORE, FP_CELL)
 	g_eCustomForwards[iFwdExecuteCVarVal] = CreateMultiForward("CSDM_ExecuteCVarValues", ET_IGNORE)
 	g_eCustomForwards[iFwdInitialized] = CreateMultiForward("CSDM_Initialized", ET_IGNORE, FP_STRING)
@@ -438,7 +440,7 @@ OpenConfigFile()
 		return pFile
 	}
 
-	formatex(szConfigFile, charsmax(szConfigFile), "%s/%s/%s", szConfigDir, g_szMainDir, g_szDefaultCfgFile)
+	formatex(szConfigFile, charsmax(szConfigFile), "%s/%s/%s", szConfigDir, g_szMainDir, GetConfigFile())
 	if((pFile = fopen(szConfigFile, "rt"))) // default config
 	{
 		server_print("[CSDM] Default config successfully loaded.")		
@@ -448,6 +450,16 @@ OpenConfigFile()
 	ExecuteForward(g_eCustomForwards[iFwdInitialized], g_iIgnoreReturn, "")
 	CSDM_SetFailState("[CSDM] ERROR: Config file ^"%s^" not found!", szConfigFile)
 	return 0
+}
+
+GetConfigFile() {
+	new file[PLATFORM_MAX_PATH]
+	format(file, charsmax(file), "config.ini")
+
+	ExecuteForward(g_eCustomForwards[iFwdGetConfigFile], _,
+		PrepareArray(file, charsmax(file), .copyback = true), charsmax(file))
+
+	return file
 }
 
 PluginCallFunc(const eArrayData[config_s], const szLineData[])

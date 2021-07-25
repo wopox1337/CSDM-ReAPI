@@ -31,7 +31,6 @@ stock const g_szMainDir[] = "csdm"
 stock const g_szExtraCfgDir[] = "extraconfigs"
 stock const g_szSpawnDir[] = "spawns"
 
-stock const g_szDefaultCfgFile[] = "config.ini"
 stock const g_szMainSection[] = "[settings]"
 
 // configdata
@@ -80,6 +79,13 @@ enum ColorTypes
 * @param szVersion			It passes in a version string, or a blank string if some load failure occurred.
 */
 forward CSDM_Initialized(const szVersion[])
+
+/** Called when core requests a configuration file.
+*
+* @param szConfig	Config file
+* @param iSize		Size
+*/
+forward CSDM_GetConfigFile(szConfig[], const iSize)
 
 /** Called when CSDM is ready to accept config hooks.
 *
