@@ -11,14 +11,6 @@ MENU_WILL_BE_OPENED = ^3Gun menu will be re-enabled next spawn.
 MENU_ALREADY_ENABLED = ^3Your equip menu is already enabled!
 FREEBUYTIME_PASSED = %0.f seconds have passed. ^rYou can't buy anything now!
 
-SPAWN_EDITOR = \ySpawn Editor^n^n
-AUTOSAVE_IS_FAILED =  Autosave is failed. Please try again.
-SPAWN_EDITOR_ENABLED = Spawn editor enabled.
-SPAWN_EDITOR_DISABLED = Spawn editor disabled.
-SPAWN_ENTITY_NOT_FOUND = Spawn entity not found!
-AIMED_ENTITY_INDEX = Aimed entity index %i
-SPAWNS_COUNT_AND_POSITION = ^n\wTotal spawns: \y%d^n\wCurrent position:
-
 [ru]
 EQUIP_MENU = Меню вооружения
 NEW_WEAPONS = Новое оружие
@@ -31,11 +23,3 @@ CHAT_HELP_GUNS = ^3напишите ^1guns ^3, чтобы открыть мен�
 MENU_WILL_BE_OPENED = ^3Меню вооружения будет открыто при следующем возрождении.
 MENU_ALREADY_ENABLED = ^3Меню экипировки уже будет открыто при возраждении!
 FREEBUYTIME_PASSED = %0.f секунд прошло. ^rВы не можете больше покупать!
-
-SPAWN_EDITOR = \yРедактор точек возрождения^n^n
-AUTOSAVE_IS_FAILED =  Ошибка автосохранения! Попробуйте ещё раз.
-SPAWN_EDITOR_ENABLED = Редактор точек возрождения включен.
-SPAWN_EDITOR_DISABLED = Редактор точек возрождения отключен.
-SPAWN_ENTITY_NOT_FOUND = Entity точки возрождения не найдена!
-AIMED_ENTITY_INDEX = Выбрана entity точки возрождения с индексом %i
-SPAWNS_COUNT_AND_POSITION = ^n\wОбщее кол-во точек: \y%d^n\wТекущая позиция:

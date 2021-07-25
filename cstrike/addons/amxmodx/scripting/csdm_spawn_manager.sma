@@ -140,11 +140,11 @@ public ConCmd_EditSpawns(const pPlayer, const level)
 	{
 		if(g_bNotSaved && SavePoints() == FAILED_CREATE)
 		{
-			console_print(pPlayer, "[CSDM] %L", pPlayer, "AUTOSAVE_IS_FAILED")
+			console_print(pPlayer, "[CSDM] Autosave is failed. Please try again.")
 			return ShowEditorMenu(pPlayer)
 		}
 
-		console_print(pPlayer, "[CSDM] %L", pPlayer, "SPAWN_EDITOR_DISABLED")
+		console_print(pPlayer, "[CSDM] Spawn editor disabled.")
 		CloseOpenedMenu(pPlayer)
 		RemoveAllSpotEntitys()
 		g_bEditSpawns = false
@@ -153,7 +153,7 @@ public ConCmd_EditSpawns(const pPlayer, const level)
 		return PLUGIN_HANDLED
 	}
 
-	console_print(pPlayer, "[CSDM] %L", pPlayer, "SPAWN_EDITOR_ENABLED")
+	console_print(pPlayer, "[CSDM] Spawn editor enabled.")
 	MakeAllSpotEntitys()
 	g_bEditSpawns = true
 
@@ -217,7 +217,7 @@ public ShowEditorMenu(const pPlayer)
 {
 	new szMenu[512], Float:vecOrigin[coord_e], bitKeys, iLen
 	get_entvar(pPlayer, var_origin, vecOrigin)
-	iLen = formatex(szMenu, charsmax(szMenu), "%L", pPlayer, "SPAWN_EDITOR")
+	iLen = formatex(szMenu, charsmax(szMenu), "\ySpawn Editor^n^n")
 	bitKeys |= g_bNotSaved ? (MENU_KEY_2|MENU_KEY_5|MENU_KEY_6|MENU_KEY_8) : (MENU_KEY_2|MENU_KEY_5|MENU_KEY_6)
 
 	if(!IsVectorZero(g_vecLastOrigin[pPlayer])) {
@@ -259,7 +259,7 @@ public ShowEditorMenu(const pPlayer)
 	)
 
 	formatex(szMenu[iLen], charsmax(szMenu) - iLen,
-		"%L \rX \y%0.f \rY \y%0.f \rZ \y%0.f", pPlayer, "SPAWNS_COUNT_AND_POSITION",
+		"^n\wTotal spawns: \y%d^n\wCurrent position: \rX \y%0.f \rY \y%0.f \rZ \y%0.f",
 		g_iTotalPoints, vecOrigin[X], vecOrigin[Y], vecOrigin[Z]
 	)
 
@@ -284,7 +284,7 @@ public EditorMenuHandler(const pPlayer, iKey)
 			if(g_pAimedEntity[pPlayer] == NULLENT)
 			{
 				if(!SetAimedEntity(pPlayer)) {
-					client_print(pPlayer, print_center, "%L", pPlayer, "SPAWN_ENTITY_NOT_FOUND")
+					client_print(pPlayer, print_center, "Spawn entity not found!")
 				}
 			}
 			else
@@ -587,7 +587,7 @@ bool:SetAimedEntity(const pPlayer, pEntity = NULLENT, bool:bPrint = true)
 
 		g_pAimedEntity[pPlayer] = pEntity
 		if(bPrint) {
-			client_print(pPlayer, print_center, "%L", pPlayer, "AIMED_ENTITY_INDEX", g_pAimedEntity[pPlayer])
+			client_print(pPlayer, print_center, "Aimed entity index %i", g_pAimedEntity[pPlayer])
 		}
 
 		g_vecLastOrigin[pPlayer][X] = g_vecLastOrigin[pPlayer][Y] = g_vecLastOrigin[pPlayer][Z] = 0.0
