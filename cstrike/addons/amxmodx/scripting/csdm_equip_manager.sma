@@ -1,5 +1,3 @@
-// Copyright © 2018 wopox1337 (Originally Vaqtincha)
-
 new const g_szEquipMenuCmds[][] = 
 {
 	"say /guns",
@@ -17,9 +15,6 @@ new const g_szEquipMenuCmds[][] =
 #include <csdm>
 #include <fakemeta>
 
-#if AMXX_VERSION_NUM < 200
-	#error ERROR: You AMXX version less then 1.10.0.5233!
-#endif
 
 #define IsPlayerNotUsed(%1)		(g_iPreviousSecondary[%1] == INVALID_INDEX && g_iPreviousPrimary[%1] == INVALID_INDEX)
 #define UserHasPrim(%1)			(get_member(%1, m_rgpPlayerItems, PRIMARY_WEAPON_SLOT) > 0 || get_member(%1, m_bHasPrimary))
@@ -69,7 +64,7 @@ new bool:g_bHasMapParameters, mp_maxmoney
 
 public plugin_init()
 {
-	register_plugin("CSDM Equip Manager", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
+	register_plugin("CSDM Equip Manager", CSDM_VERSION, "wopox1337")
 	register_dictionary("csdm_reapi.txt")
 	register_dictionary("common.txt")
 	

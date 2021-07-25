@@ -1,13 +1,7 @@
-// Copyright © 2018 wopox1337 (Originally Vaqtincha)
-
 #include <amxmodx>
 #include <csdm>
 #include <fakemeta>
 
-
-#if AMXX_VERSION_NUM < 200
-	#error ERROR: You AMXX version less then 1.10.0.5233!
-#endif
 
 #define IsPlayer(%1)				(1 <= %1 <= g_iMaxPlayers)
 
@@ -79,8 +73,8 @@ public plugin_end()
 
 public plugin_init()
 {
-	register_plugin(CSDM_PLUGIN_NAME, CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
-	register_cvar("csdm_version", CSDM_VERSION_STRING, FCVAR_SPONLY|FCVAR_UNLOGGED)
+	register_plugin(CSDM_PLUGIN_NAME, CSDM_VERSION, "wopox1337")
+	register_cvar("csdm_version", CSDM_VERSION, FCVAR_SPONLY|FCVAR_UNLOGGED)
 
 	RegisterHookChain(RG_CSGameRules_RestartRound, "CSGameRules_RestartRound", .post = false)
 	RegisterHookChain(RG_CSGameRules_DeadPlayerWeapons, "CSGameRules_DeadPlayerWeapons", .post = false)
@@ -93,7 +87,7 @@ public plugin_init()
 	set_msg_block(get_user_msgid("ClCorpse"), BLOCK_SET)
 
 	g_iMaxPlayers = get_maxplayers()
-	ExecuteForward(g_eCustomForwards[iFwdInitialized], g_iIgnoreReturn, CSDM_VERSION_STRING)
+	ExecuteForward(g_eCustomForwards[iFwdInitialized], g_iIgnoreReturn, CSDM_VERSION)
 }
 
 new iEquipManId, iEquipManGFuncId, iEquipManSFuncId

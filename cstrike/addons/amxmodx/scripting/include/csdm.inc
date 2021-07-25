@@ -1,31 +1,23 @@
-/** Copyright © 2016 Vaqtincha
- *
- * CSDM include file.
- *
-*/
-
 #if defined _csdm_core_included
 	#endinput
 #endif
 
 #define _csdm_core_included
 
-#if AMXX_VERSION_NUM >= 175
-	#pragma reqlib csdm_core
-	#if !defined AMXMODX_NOAUTOLOAD
-		#pragma loadlib csdm_core
-	#endif
-#else
-	#pragma library csdm_core
+#pragma reqlib csdm_core
+#if !defined AMXMODX_NOAUTOLOAD
+	#pragma loadlib csdm_core
 #endif
 
 #if !defined _reapi_included
 	#include <reapi>
 #endif
 
-const CSDM_VERSION_NUM = 010
-stock const CSDM_VERSION_STRING[] = "0.1.0"
 stock const CSDM_PLUGIN_NAME[] = "CSDM Core"
+
+#if !defined CSDM_VERSION
+  #define CSDM_VERSION "%CSDM_VERSION%"
+#endif
 
 stock const g_szMainDir[] = "csdm"
 stock const g_szExtraCfgDir[] = "extraconfigs"

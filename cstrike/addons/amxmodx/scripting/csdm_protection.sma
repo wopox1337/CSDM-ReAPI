@@ -1,5 +1,3 @@
-// Copyright © 2018 wopox1337 (Originally Vaqtincha)
-
 #include <amxmodx>
 #include <csdm>
 
@@ -39,7 +37,7 @@ public OnConfigsExecuted()
 
 public plugin_init()
 {
-	register_plugin("CSDM Protection", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
+	register_plugin("CSDM Protection", CSDM_VERSION, "wopox1337")
 
 	if(g_fImmunityTime > 0.0) {
 		if(g_bBlockDamage)

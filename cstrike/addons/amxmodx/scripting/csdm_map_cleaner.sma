@@ -1,5 +1,3 @@
-// Copyright © 2018 wopox1337 (Originally Vaqtincha)
-
 #include <amxmodx>
 #include <csdm>
 #include <fakemeta>
@@ -75,7 +73,7 @@ public CSDM_ConfigurationLoad(const ReadTypes:iReadAction)
 
 public plugin_init()
 {
-	register_plugin("CSDM Map Cleaner", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")	
+	register_plugin("CSDM Map Cleaner", CSDM_VERSION, "wopox1337")	
 
 	if(g_iFwdEntitySpawn) {
 		unregister_forward(FM_Spawn, g_iFwdEntitySpawn)

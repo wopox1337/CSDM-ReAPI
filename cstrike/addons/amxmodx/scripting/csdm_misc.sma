@@ -1,5 +1,3 @@
-// Copyright © 2018 wopox1337 (Originally Vaqtincha)
-
 #include <amxmodx>
 #include <hamsandwich>
 #include <csdm>
@@ -27,7 +25,7 @@ new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1
 
 public plugin_init()
 {
-	register_plugin("CSDM Misc", CSDM_VERSION_STRING, "wopox1337\Vaqtincha")
+	register_plugin("CSDM Misc", CSDM_VERSION, "wopox1337")
 
 	for(new i = 0; i < sizeof(g_szWeaponList); i++)
 	{
