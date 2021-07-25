@@ -72,10 +72,9 @@ public plugin_precache()
 
 public plugin_end()
 {
-	if(g_tConfigSections)
-		TrieDestroy(g_tConfigSections)
-	if(g_tConfigValues)
-		TrieDestroy(g_tConfigValues)
+	ArrayDestroy(g_aConfigData)
+	TrieDestroy(g_tConfigSections)
+	TrieDestroy(g_tConfigValues)
 }
 
 public plugin_init()
