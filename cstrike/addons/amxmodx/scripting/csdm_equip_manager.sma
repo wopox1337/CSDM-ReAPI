@@ -191,7 +191,7 @@ public ClCmd_EnableMenu(const pPlayer)
 		menu_display(pPlayer, g_iEquipMenuID)
 		return PLUGIN_HANDLED
 	}
-	else if(g_bAlwaysOpenMenu && is_user_alive(pPlayer) && !UserHasPrim(pPlayer) && !UserHasSec(pPlayer))
+	else if(g_bAlwaysOpenMenu && is_user_alive(pPlayer))
 	{
 		menu_display(pPlayer, g_iEquipMenuID)
 		return PLUGIN_HANDLED
