@@ -285,6 +285,3 @@ stock rg_set_rendering(const pEntity, const fx = kRenderFxNone, const Float:flCo
 	set_entvar(pEntity, var_rendercolor, flColor)
 	set_entvar(pEntity, var_renderamt, iAmount)
 }
-
-
-

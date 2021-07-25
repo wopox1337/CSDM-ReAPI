@@ -4,11 +4,10 @@ NEW_WEAPONS = New weapons
 PREVIOUS_SETUP = Previous setup
 DONT_SHOW_MENU_AGAIN = 2 + Don't show menu again^n
 RANDOM_SELECTION = Random selection
-SEC_WEAPONS = Secondary weapon
-PRI_WEAPONS = Primary weapon
+SECONDARY_WEAPONS = Secondary weapon
+PRIMARY_WEAPONS = Primary weapon
 CHAT_HELP_GUNS = ^3say ^1guns ^3to re-enable the gun menu.
 MENU_WILL_BE_OPENED = ^3Gun menu will be re-enabled next spawn.
-MENU_ALREADY_ENABLED = ^3Your equip menu is already enabled!
 FREEBUYTIME_PASSED = %0.f seconds have passed. ^rYou can't buy anything now!
 
 [ru]
@@ -17,9 +16,8 @@ NEW_WEAPONS = Новое оружие
 PREVIOUS_SETUP = Предыдущее оружие
 DONT_SHOW_MENU_AGAIN = 2 + Не показывать больше меню^n
 RANDOM_SELECTION = Случайный выбор
-SEC_WEAPONS = Дополнительное оружие
-PRI_WEAPONS = Основное оружие
+SECONDARY_WEAPONS = Дополнительное оружие
+PRIMARY_WEAPONS = Основное оружие
 CHAT_HELP_GUNS = ^3напишите ^1guns ^3, чтобы открыть меню оружия.
 MENU_WILL_BE_OPENED = ^3Меню вооружения будет открыто при следующем возрождении.
-MENU_ALREADY_ENABLED = ^3Меню экипировки уже будет открыто при возраждении!
 FREEBUYTIME_PASSED = %0.f секунд прошло. ^rВы не можете больше покупать!
