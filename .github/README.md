@@ -1,24 +1,22 @@
 ![enter image description here](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11oXQFybzvtvmso2SeJqs_jHxFuu-iq5iORrjIGUUQDhE3vFxVg)
 
-# Readme language: [ENG](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README.md) | [RUS](https://github.com/DevCSru/CSDM-ReAPI/blob/master/README_ru.md)
-
 [![Actions Status](https://github.com/DevCSru/CSDM-ReAPI/workflows/Build/badge.svg)](https://github.com/DevCSru/CSDM-ReAPI/actions)</br>
 
 # Counter Strike Deathmatch [ReAPI version]
-#### Description:
-> Players have an infinite number of respawns with full armor, and will
-> return within seconds of their death. Once the player is reborn, the
-> player will be invulnerable for a few seconds,this time will allow the
-> player to access the selection of weapons. Ammunition is infinite, and
-> any weapon can be bought (or taken from the menu), regardless of cost,
-> except for equipment like the C4 and the Defense Kit. The purchase of
-> weapons can be blocked or random, depending on which player chooses to
-> use. Once the player starts moving or shooting, the invulnerability is
-> removed and the purchase menu will no longer be available. Killing
-> enemies player will gain points, not money or new weapons. Also a
-> possible mode of domination (superiority of the enemy on points).
-> Weapons cannot be thrown away and players will not drop weapons when
-> they are killed. Fire on their own and collision disabled.
+# Description:
+Players have an infinite number of respawns with full armor, and will
+return within seconds of their death. Once the player is reborn, the
+player will be invulnerable for a few seconds,this time will allow the
+player to access the selection of weapons. Ammunition is infinite, and
+any weapon can be bought (or taken from the menu), regardless of cost,
+except for equipment like the C4 and the Defense Kit. The purchase of
+weapons can be blocked or random, depending on which player chooses to
+use. Once the player starts moving or shooting, the invulnerability is
+removed and the purchase menu will no longer be available. Killing
+enemies player will gain points, not money or new weapons. Also a
+possible mode of domination (superiority of the enemy on points).
+Weapons cannot be thrown away and players will not drop weapons when
+they are killed. Fire on their own and collision disabled.
 
 
 #### Requirments
