@@ -95,7 +95,7 @@ new iEquipManId, iEquipManGFuncId, iEquipManSFuncId
 public plugin_cfg()
 {
 	CheckForwards()
-	if((iEquipManId = is_plugin_loaded("CSDM Equip Manager")) > 0) 
+	if((iEquipManId = is_plugin_loaded("CSDM Equip Manager")) > 0)
 	{
 		iEquipManGFuncId = get_func_id("get_equip_mode", iEquipManId)
 		iEquipManSFuncId = get_func_id("set_equip_mode", iEquipManId)
@@ -109,7 +109,7 @@ public EquipTypes:native_get_equipmode(iPlugin, iParams)
 		log_error(AMX_ERR_NATIVE, "[CSDM] ERROR: Plugin ^"CSDM Equip Manager^" not loaded!")
 		return EQUIP_NONE
 	}
-	
+
 	if(callfunc_begin_i(iEquipManGFuncId, iEquipManId) == INVALID_HANDLE)
 	{
 		log_error(AMX_ERR_NATIVE, "[CSDM] ERROR: Called dynanative into a paused plugin!")
@@ -129,7 +129,7 @@ public native_set_equipmode(iPlugin, iParams)
 		log_error(AMX_ERR_NATIVE, "[CSDM] ERROR: Plugin ^"CSDM Equip Manager^" not loaded!")
 		return
 	}
-	
+
 	if(callfunc_begin_i(iEquipManSFuncId, iEquipManId) == INVALID_HANDLE)
 	{
 		log_error(AMX_ERR_NATIVE, "[CSDM] ERROR: Called dynanative into a paused plugin!")
@@ -139,7 +139,7 @@ public native_set_equipmode(iPlugin, iParams)
 	callfunc_push_int(get_param(1)) 	// new equip mode
 	callfunc_end()
 }
-	
+
 public GameTypes:native_get_gamemode(iPlugin, iParams)
 {
 	return g_iGamemode
@@ -352,7 +352,7 @@ LoadSettings(const ReadTypes:iReadAction = CFG_READ)
 		if(szLineData[0] == '[')
 		{
 			bMainSettings = bool:(equali(szLineData, g_szMainSection))
-			
+
 			strtolower(szLineData)
 			if(g_iTotalItems && !TrieGetCell(g_tConfigSections, szLineData, iItemIndex)) {
 				iItemIndex = INVALID_INDEX
@@ -434,7 +434,7 @@ OpenConfigFile()
 	formatex(szConfigFile, charsmax(szConfigFile), "%s/%s/%s", szConfigDir, g_szMainDir, g_szDefaultCfgFile)
 	if((pFile = fopen(szConfigFile, "rt"))) // default config
 	{
-		server_print("[CSDM] Default config successfully loaded.")		
+		server_print("[CSDM] Default config successfully loaded.")
 		return pFile
 	}
 
@@ -481,7 +481,7 @@ bool:CheckNativeParams(const iParams, const iMin, const iMax)
 		log_error(AMX_ERR_PARAMS, "[CSDM] ERROR: Bad arg count!")
 		return false
 	}
-	
+
 	return true
 }
 

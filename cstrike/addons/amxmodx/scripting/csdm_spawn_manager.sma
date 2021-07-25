@@ -24,7 +24,7 @@ const FORCE_VIEW_ANGLES = 1
 
 enum coord_e { Float:X, Float:Y, Float:Z }
 
-enum 
+enum
 {
 	FAILED_CREATE,
 	FILE_SAVED,
@@ -52,7 +52,7 @@ new g_szSpawnDirectory[PLATFORM_MAX_PATH], g_szSpawnFile[PLATFORM_MAX_PATH + 32]
 new g_iTotalPoints, g_iEditorMenuID, bool:g_bEditSpawns, bool:g_bNotSaved
 new g_iGravity, g_iMaxPlayers
 
-public plugin_precache() 
+public plugin_precache()
 {
 	precache_model(g_szModel)
 }
@@ -61,7 +61,7 @@ public plugin_init()
 {
 	register_plugin("CSDM Spawn Manager", CSDM_VERSION, "wopox1337")
 	register_concmd("csdm_edit_spawns", "ConCmd_EditSpawns", ADMIN_MAP, "Edits spawn configuration")
-	register_clcmd("nightvision", "ClCmd_Nightvision") 
+	register_clcmd("nightvision", "ClCmd_Nightvision")
 	register_menucmd((g_iEditorMenuID = register_menuid(g_szEditorMenuTitle)), MENU_KEY_BITS, "EditorMenuHandler")
 
 	DisableHookChain(g_hGetPlayerSpawnSpot = RegisterHookChain(RG_CSGameRules_GetPlayerSpawnSpot, "CSGameRules_GetPlayerSpawnSpot", .post = false))
@@ -195,7 +195,7 @@ RandomSpawn(const pPlayer)
 		}
 
 	} while(iAttempts <= g_iTotalPoints)
-	
+
 	return false
 }
 
@@ -209,7 +209,7 @@ bool:CheckDistance(const pPlayer, const Float:vecOrigin[coord_e])
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -219,14 +219,14 @@ public ShowEditorMenu(const pPlayer)
 	get_entvar(pPlayer, var_origin, vecOrigin)
 	iLen = formatex(szMenu, charsmax(szMenu), "%L", pPlayer, "SPAWN_EDITOR")
 	bitKeys |= g_bNotSaved ? (MENU_KEY_2|MENU_KEY_5|MENU_KEY_6|MENU_KEY_8) : (MENU_KEY_2|MENU_KEY_5|MENU_KEY_6)
-	
+
 	if(!IsVectorZero(g_vecLastOrigin[pPlayer])) {
 		bitKeys |= MENU_KEY_4
 	}
 
 	if(g_pAimedEntity[pPlayer] == NULLENT)
 	{
-		iLen += formatex(szMenu[iLen], charsmax(szMenu) - iLen, 
+		iLen += formatex(szMenu[iLen], charsmax(szMenu) - iLen,
 			"%s^n^n\
 			\y2. \wMark aimed spawn^n\
 			\d3. Teleport me^n\
@@ -240,26 +240,26 @@ public ShowEditorMenu(const pPlayer)
 	}
 	else
 	{
-		iLen += formatex(szMenu[iLen], charsmax(szMenu) - iLen, 
+		iLen += formatex(szMenu[iLen], charsmax(szMenu) - iLen,
 			"\y1. \wUpdate position^n^n\
 			\y2. \wUnmark marked spawn^n\
 			\y3. \wTeleport me^n\
 			\y4. %s^n^n",
 			!IsVectorZero(g_vecLastOrigin[pPlayer]) ? "\wCancel delete" : "\rDelete spawn"
 		)
-		
+
 		bitKeys |= (MENU_KEY_1|MENU_KEY_3|MENU_KEY_4)
 	}
 
-	iLen += formatex(szMenu[iLen], charsmax(szMenu) - iLen, 
+	iLen += formatex(szMenu[iLen], charsmax(szMenu) - iLen,
 		"\y5. \wReflesh info^n\
 		\y6. \wGravity \y%0.2f^n^n\
 		%s^n", g_flGravityValues[g_iGravity],
 		g_bNotSaved ? "\y8. \wSave manual" : "\d8. Save manual"
 	)
 
-	formatex(szMenu[iLen], charsmax(szMenu) - iLen, 
-		"%L \rX \y%0.f \rY \y%0.f \rZ \y%0.f", pPlayer, "SPAWNS_COUNT_AND_POSITION", 
+	formatex(szMenu[iLen], charsmax(szMenu) - iLen,
+		"%L \rX \y%0.f \rY \y%0.f \rZ \y%0.f", pPlayer, "SPAWNS_COUNT_AND_POSITION",
 		g_iTotalPoints, vecOrigin[X], vecOrigin[Y], vecOrigin[Z]
 	)
 
@@ -303,8 +303,8 @@ public EditorMenuHandler(const pPlayer, iKey)
 			new Float:vecOrigin[coord_e]
 			get_entvar(pPlayer, var_origin, vecOrigin)
 
-			client_print_color(pPlayer, print_team_grey, 
-				"Total spawns: ^4%d ^1Current position: ^3X ^4%0.f ^3Y ^4%0.f ^3Z ^4%0.f", 
+			client_print_color(pPlayer, print_team_grey,
+				"Total spawns: ^4%d ^1Current position: ^3X ^4%0.f ^3Y ^4%0.f ^3Z ^4%0.f",
 					g_iTotalPoints, vecOrigin[X], vecOrigin[Y], vecOrigin[Z])
 		}
 		case 6:
@@ -373,7 +373,7 @@ bool:DeleteSpawn(const pPlayer, const pEntity = NULLENT)
 		return false
 
 	GetPosition(pEntity, g_vecLastOrigin[pPlayer], g_vecLastAngles[pPlayer], g_vecLastVAngles[pPlayer])
-	
+
 	g_pAimedEntity[pPlayer] = NULLENT
 	REMOVE_ENTITY(pEntity)
 	max(0, g_iTotalPoints--)
@@ -416,12 +416,12 @@ LoadPoints()
 		if(!szDatas[0] || IsCommentLine(szDatas))
 			continue
 
-		if(parse(szDatas, 
-					szOrigin[X], 5, szOrigin[Y], 5, szOrigin[Z], 5, 
+		if(parse(szDatas,
+					szOrigin[X], 5, szOrigin[Y], 5, szOrigin[Z], 5,
 					szAngles[X], 5, szAngles[Y], 5, szAngles[Z], 5,
 					szTeam, charsmax(szTeam), // ignore team param 7
 					szVAngles[X], 5, szVAngles[Y], 5, szVAngles[Z], 5
-				) != 10) 
+				) != 10)
 		{
 			continue // ignore invalid lines
 		}
@@ -487,9 +487,9 @@ SavePoints()
 			continue
 
 		fprintf(pFile,
-			"%-6.f %-6.f %-6.f %-4.f %-5.f %-2.f %-2.1d %-4.f %-5.f %-1.f^n", 
+			"%-6.f %-6.f %-6.f %-4.f %-5.f %-2.f %-2.1d %-4.f %-5.f %-1.f^n",
 			g_vecSpotOrigin[g_iTotalPoints][X], g_vecSpotOrigin[g_iTotalPoints][Y], g_vecSpotOrigin[g_iTotalPoints][Z],
-			g_vecSpotAngles[g_iTotalPoints][X],  g_vecSpotAngles[g_iTotalPoints][Y],  g_vecSpotAngles[g_iTotalPoints][Z], 
+			g_vecSpotAngles[g_iTotalPoints][X],  g_vecSpotAngles[g_iTotalPoints][Y],  g_vecSpotAngles[g_iTotalPoints][Z],
 			0, // ignore team param 7
 			g_vecSpotVAngles[g_iTotalPoints][X],  g_vecSpotVAngles[g_iTotalPoints][Y], g_vecSpotVAngles[g_iTotalPoints][Z]
 		)
@@ -497,8 +497,8 @@ SavePoints()
 		g_iTotalPoints++
 	}
 
-	if(g_iTotalPoints) 	
-		EnableHookChain(g_hGetPlayerSpawnSpot) 
+	if(g_iTotalPoints)
+		EnableHookChain(g_hGetPlayerSpawnSpot)
 	else
 		DisableHookChain(g_hGetPlayerSpawnSpot)
 
@@ -518,7 +518,7 @@ MakeAllSpotEntitys()
 		if(IsVectorZero(g_vecSpotOrigin[i]))
 			continue
 
-		SetPosition(CreateEntity(), g_vecSpotOrigin[i], g_vecSpotAngles[i], g_vecSpotVAngles[i])			
+		SetPosition(CreateEntity(), g_vecSpotOrigin[i], g_vecSpotAngles[i], g_vecSpotVAngles[i])
 	}
 }
 
@@ -540,7 +540,7 @@ CreateEntity()
 		server_print("Failed to create entity")
 		return NULLENT
 	}
-	
+
 	set_entvar(pEntity, var_classname, g_szClassName)
 	SET_MODEL(pEntity, g_szModel)
 	// SET_SIZE(pEntity, VECTOR_ZERO, VECTOR_ZERO)
@@ -557,7 +557,7 @@ SetPlayerPosition(const pPlayer, const Float:vecOrigin[coord_e], const Float:vec
 	set_entvar(pPlayer, var_velocity, VECTOR_ZERO)
 	set_entvar(pPlayer, var_v_angle, VECTOR_ZERO)
 	set_entvar(pPlayer, var_angles, vecAngles)
-	set_entvar(pPlayer, var_punchangle, VECTOR_ZERO)	
+	set_entvar(pPlayer, var_punchangle, VECTOR_ZERO)
 	set_entvar(pPlayer, var_fixangle, FORCE_VIEW_ANGLES)
 }
 
@@ -589,12 +589,12 @@ bool:SetAimedEntity(const pPlayer, pEntity = NULLENT, bool:bPrint = true)
 		if(bPrint) {
 			client_print(pPlayer, print_center, "%L", pPlayer, "AIMED_ENTITY_INDEX", g_pAimedEntity[pPlayer])
 		}
-		
+
 		g_vecLastOrigin[pPlayer][X] = g_vecLastOrigin[pPlayer][Y] = g_vecLastOrigin[pPlayer][Z] = 0.0
 
 		return true
 	}
-	
+
 	return false
 }
 
@@ -616,7 +616,7 @@ ClearAllArrays()
 	}
 }
 
-CloseOpenedMenu(const pPlayer) 
+CloseOpenedMenu(const pPlayer)
 {
 	new iMenuID, iKeys
 	get_user_menu(pPlayer, iMenuID, iKeys)
@@ -668,7 +668,7 @@ bool:IsFreeSpace(const pPlayer, const Float:vecOrigin[coord_e])
 }
 
 // checks if a space is vacant, by VEN
-stock bool:IsHullVacant(const Float:vecOrigin[coord_e], const iHullNumber, const fNoMonsters, pSkipEnt = 0) 
+stock bool:IsHullVacant(const Float:vecOrigin[coord_e], const iHullNumber, const fNoMonsters, pSkipEnt = 0)
 {
 	new ptr
 	engfunc(EngFunc_TraceHull, vecOrigin, vecOrigin, fNoMonsters, iHullNumber, pSkipEnt, ptr)

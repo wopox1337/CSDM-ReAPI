@@ -10,11 +10,11 @@ const PROTECTION_TASK_ID = 216897
 
 enum color_e { Float:R, Float:G, Float:B }
 
-enum 
-{ 
-	STATUSICON_HIDE, 
-	STATUSICON_SHOW, 
-	STATUSICON_FLASH 
+enum
+{
+	STATUSICON_HIDE,
+	STATUSICON_SHOW,
+	STATUSICON_FLASH
 }
 
 new bool:g_bIsProtected[MAX_CLIENTS + 1]
@@ -22,7 +22,7 @@ new g_iMaxPlayers
 
 new g_szSpriteName[18] = "suithelmet_full" // max lenght = 16
 new Float:g_flRenderAlpha = 10.0, bool:g_bBlockDamage = true, Float: g_fImmunityTime;
-new Float:g_flTeamColors[TeamName][color_e] = 
+new Float:g_flTeamColors[TeamName][color_e] =
 {
 	{0.0, 0.0, 0.0},
 	{235.0, 0.0, 0.0}, // TEAM_TERRORIST
@@ -47,7 +47,7 @@ public plugin_init()
 		RegisterHookChain(RG_CBasePlayer_RemoveSpawnProtection, "CBasePlayer_RemoveSpawnProtection", .post = true)
 
 	}
-	
+
 	g_iMaxPlayers = get_maxplayers()
 }
 
@@ -115,7 +115,7 @@ public ReadCfg(const szLineData[], const iSectionID)
 		{
 			g_flTeamColors[iTeam][R] = floatclamp(str_to_float(szRed), 1.0, 255.0)
 			g_flTeamColors[iTeam][G] = floatclamp(str_to_float(szGreen), 1.0, 255.0)
-			g_flTeamColors[iTeam][B] = floatclamp(str_to_float(szBlue), 1.0, 255.0)	
+			g_flTeamColors[iTeam][B] = floatclamp(str_to_float(szBlue), 1.0, 255.0)
 		}
 		else if(equali(szValue, "random"))
 		{
@@ -169,7 +169,7 @@ stock SendStatusIcon(const pPlayer, iStatus = STATUSICON_HIDE, red = 0, green = 
 	{
 		message_begin(MSG_ONE_UNRELIABLE, iMsgIdStatusIcon, .player = pPlayer)
 		write_byte(iStatus)			// status: 0 - off, 1 - on, 2 - flash
-		write_string(g_szSpriteName) 	
+		write_string(g_szSpriteName)
 		write_byte(red)
 		write_byte(green)
 		write_byte(blue)

@@ -7,11 +7,11 @@
 
 const HideWeapon_Flags = 1 	// "HideWeapon" msg argument
 
-new const g_szWeaponList[][] = 
+new const g_szWeaponList[][] =
 {
-	"weapon_m4a1", 
+	"weapon_m4a1",
 	"weapon_usp",
-	"weapon_famas", 
+	"weapon_famas",
 	"weapon_glock18"
 }
 
@@ -114,15 +114,15 @@ public ReadCfg(const szLineData[], const iSectionID)
 	if(!ParseConfigKey(szLineData, szKey, szSign, szValue))
 		return
 
-	if(equali(szKey, "weaponstate_remember")) 
+	if(equali(szKey, "weaponstate_remember"))
 	{
 		g_bWeaponStateRemember = bool:(str_to_num(szValue))
 	}
-	else if(equali(szKey, "refill_clip_weapons")) 
+	else if(equali(szKey, "refill_clip_weapons"))
 	{
 		g_iRefillClip = clamp(str_to_num(szValue), 0, 2)
 	}
-	else if(equali(szKey, "hide_hud_flags")) 
+	else if(equali(szKey, "hide_hud_flags"))
 	{
 		if(ContainFlag(szValue, "c"))
 			g_bitHideHudFlags |= HIDEHUD_CROSSHAIR
@@ -155,7 +155,7 @@ CheckForwards()
 		{
 			DisableHamForward(g_hAddToPlayer[i])
 			DisableHamForward(g_hSecondaryAttack[i])
-		}	
+		}
 	}
 
 	if(g_bitHideHudFlags && !iMsgHookHideWeapon)

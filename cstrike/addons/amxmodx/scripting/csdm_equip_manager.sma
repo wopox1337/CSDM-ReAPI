@@ -1,4 +1,4 @@
-new const g_szEquipMenuCmds[][] = 
+new const g_szEquipMenuCmds[][] =
 {
 	"say /guns",
 	"say guns",
@@ -41,7 +41,7 @@ enum arraylist_e
 	Array:BotPrimary
 }
 
-enum 
+enum
 {
 	BUYZONE_REMOVE,
 	BUYZONE_TRIGGER_ON,
@@ -67,7 +67,7 @@ public plugin_init()
 	register_plugin("CSDM Equip Manager", CSDM_VERSION, "wopox1337")
 	register_dictionary("csdm_reapi.txt")
 	register_dictionary("common.txt")
-	
+
 	for(new i = 0; i < sizeof(g_szEquipMenuCmds)-1; i++)
 	{
 		register_clcmd(g_szEquipMenuCmds[i], "ClCmd_EnableMenu")
@@ -144,7 +144,7 @@ public CSDM_ConfigurationLoad(const ReadTypes:iReadAction)
 
 public CSDM_ExecuteCVarValues()
 {
-	if(g_iEquipMode == FREE_BUY) 
+	if(g_iEquipMode == FREE_BUY)
 	{
 		set_cvar_num("mp_buytime", -1)
 
@@ -160,7 +160,7 @@ public CSDM_RestartRound(const bool:bNewGame)
 		return
 
 	new iPlayers[32], iCount, pPlayer
-	
+
 	get_players(iPlayers, iCount, "ah")
 	for(--iCount; iCount >= 0; iCount--)
 	{
@@ -188,7 +188,7 @@ public ClCmd_EnableMenu(const pPlayer)
 		client_print_color(pPlayer, print_team_red, "^4[CSDM] %L", pPlayer, "MENU_ALREADY_OPENED")
 		return PLUGIN_HANDLED
 	}
-	
+
 	if(IsPlayerNotUsed(pPlayer) && is_user_alive(pPlayer))
 	{
 		menu_display(pPlayer, g_iEquipMenuID)
@@ -219,7 +219,7 @@ public CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
 		if(g_bBlockDefaultItems || !user_has_weapon(pPlayer, CSW_KNIFE)) {
 			rg_give_item(pPlayer, "weapon_knife")
 		}
-		
+
 		if(g_flFreeBuyTime > 0.0) {
 			g_flPlayerBuyTime[pPlayer] = get_gametime() + g_flFreeBuyTime
 		}
@@ -279,7 +279,7 @@ public CBasePlayer_HasRestrictItem(const pPlayer, const ItemID:iItemId, const It
 	if(iItemId == ITEM_NONE || iRestType != ITEM_TYPE_BUYING)
 		return HC_CONTINUE
 
-	if(g_flFreeBuyTime > 0.0 && g_flPlayerBuyTime[pPlayer] < get_gametime()) 
+	if(g_flFreeBuyTime > 0.0 && g_flPlayerBuyTime[pPlayer] < get_gametime())
 	{
 		client_print(pPlayer, print_center, "FREEBUYTIME_PASSED", g_flFreeBuyTime)
 		SetHookChainReturn(ATYPE_INTEGER, true)
@@ -310,7 +310,7 @@ public EquipMenuHandler(const pPlayer, const iMenu, const iItem)
 	switch(str_to_num(szNum))
 	{
 		case 1: menu_display(pPlayer, g_iNumSecondary ? g_iSecondaryMenuID : g_iPrimaryMenuID)
-		case 2: 
+		case 2:
 		{
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
@@ -319,7 +319,7 @@ public EquipMenuHandler(const pPlayer, const iMenu, const iItem)
 		{
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
-		
+
 			client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_HELP_GUNS")
 			g_bOpenMenu[pPlayer] = false
 		}
@@ -340,13 +340,13 @@ public EquipMenuCallback(const pPlayer, const iMenu, const iItem)
 
 	new szNum[3], iAccess, hCallback
 	menu_item_getinfo(iMenu, iItem, iAccess, szNum, charsmax(szNum), .callback = hCallback)
-	
+
 	if(!g_iNumSecondary && !g_iNumPrimary)
 		return ITEM_DISABLED
 
 	if((szNum[0] == '2' || szNum[0] == '3') && IsPlayerNotUsed(pPlayer))
 		return ITEM_DISABLED
-	
+
 	return ITEM_IGNORE
 }
 
@@ -372,7 +372,7 @@ public PrimaryMenuHandler(const pPlayer, const iMenu, const iItem)
 {
 	if(iItem == MENU_EXIT || iItem < 0)
 		return PLUGIN_HANDLED
-	
+
 	new szNum[3], iAccess, hCallback
 	menu_item_getinfo(iMenu, iItem, iAccess, szNum, charsmax(szNum), .callback = hCallback)
 
@@ -494,7 +494,7 @@ RandomWeapons(const pPlayer, const Array:aArrayName, const iArraySize)
 {
 	if(!iArraySize)
 		return INVALID_INDEX
-	
+
 	new eWeaponData[equip_data_s], iRand = random(iArraySize)
 	ArrayGetArray(aArrayName, iRand, eWeaponData)
 	GiveWeapon(pPlayer, eWeaponData)
@@ -577,7 +577,7 @@ AddItemsToMenu(const iMenu, const Array:aArrayName, const iArraySize)
 		return
 
 	new eWeaponData[equip_data_s], szNum[3], i
-	for(i = 0; i < iArraySize; i++) 
+	for(i = 0; i < iArraySize; i++)
 	{
 		ArrayGetArray(aArrayName, i, eWeaponData)
 		num_to_str(i, szNum, charsmax(szNum))
@@ -613,7 +613,7 @@ CheckForwards()
 	{
 		DisableHookChain(g_hBuyWeaponByWeaponID)
 		DisableHookChain(g_hHasRestrictItem)
-		
+
 		SetStateBuyZone(BUYZONE_TRIGGER_OFF)
 		if(g_bHasMapParameters)
 		{

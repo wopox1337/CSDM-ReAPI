@@ -23,7 +23,7 @@ enum
 	player_weaponstrip	=	(1<<12)
 }
 
-new const g_szMapEntityList[][] = 
+new const g_szMapEntityList[][] =
 {
 	"func_bomb_target",
 	"info_bomb_target",
@@ -73,7 +73,7 @@ public CSDM_ConfigurationLoad(const ReadTypes:iReadAction)
 
 public plugin_init()
 {
-	register_plugin("CSDM Map Cleaner", CSDM_VERSION, "wopox1337")	
+	register_plugin("CSDM Map Cleaner", CSDM_VERSION, "wopox1337")
 
 	if(g_iFwdEntitySpawn) {
 		unregister_forward(FM_Spawn, g_iFwdEntitySpawn)
@@ -81,7 +81,7 @@ public plugin_init()
 	if(g_tMapEntitys) {
 		TrieDestroy(g_tMapEntitys)
 	}
-	
+
 	DisableHamForward(g_hWeaponBoxSpawn = RegisterHam(Ham_Spawn, "weaponbox", "CWeaponBox_Spawn", .Post = true))
 	DisableHamForward(g_hShieldSpawn = RegisterHam(Ham_Spawn, "weapon_shield", "CWShield_Spawn", .Post = true))
 
@@ -151,7 +151,7 @@ public Entity_Spawn(const pEntity)
 }
 
 public ReadCfg(const szLineData[], const iSectionID)
-{	
+{
 	new szKey[MAX_KEY_LEN], szValue[MAX_VALUE_LEN], szSign[2]
 	if(!ParseConfigKey(szLineData, szKey, szSign, szValue))
 		return
