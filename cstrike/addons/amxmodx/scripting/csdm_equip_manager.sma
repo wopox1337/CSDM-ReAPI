@@ -101,9 +101,13 @@ public plugin_cfg()
 
 public plugin_end()
 {
-	if(g_tCheckItemName) {
-		TrieDestroy(g_tCheckItemName)
-	}
+	ArrayDestroy(g_aArrays[Autoitems])
+	ArrayDestroy(g_aArrays[Secondary])
+	ArrayDestroy(g_aArrays[Primary])
+	ArrayDestroy(g_aArrays[BotSecondary])
+	ArrayDestroy(g_aArrays[BotPrimary])
+
+	TrieDestroy(g_tCheckItemName)
 }
 
 // API
