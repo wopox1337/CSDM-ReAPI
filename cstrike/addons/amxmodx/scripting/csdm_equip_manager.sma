@@ -184,10 +184,7 @@ public ClCmd_EnableMenu(const pPlayer)
 		return PLUGIN_HANDLED
 
 	if(IsViewingMenu(pPlayer))
-	{
-		client_print_color(pPlayer, print_team_red, "^4[CSDM] %L", pPlayer, "MENU_ALREADY_OPENED")
 		return PLUGIN_HANDLED
-	}
 
 	if(IsPlayerNotUsed(pPlayer) && is_user_alive(pPlayer))
 	{

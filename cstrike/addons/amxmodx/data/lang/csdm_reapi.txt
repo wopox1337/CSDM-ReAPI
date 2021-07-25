@@ -9,7 +9,6 @@ PRI_WEAPONS = Primary weapon
 CHAT_HELP_GUNS = ^3say ^1guns ^3to re-enable the gun menu.
 MENU_WILL_BE_OPENED = ^3Gun menu will be re-enabled next spawn.
 MENU_ALREADY_ENABLED = ^3Your equip menu is already enabled!
-MENU_ALREADY_OPENED = ^3Equip menu already opened!
 FREEBUYTIME_PASSED = %0.f seconds have passed. ^rYou can't buy anything now!
 
 SPAWN_EDITOR = \ySpawn Editor^n^n
@@ -31,7 +30,6 @@ PRI_WEAPONS = Основное оружие
 CHAT_HELP_GUNS = ^3напишите ^1guns ^3, чтобы открыть меню оружия.
 MENU_WILL_BE_OPENED = ^3Меню вооружения будет открыто при следующем возрождении.
 MENU_ALREADY_ENABLED = ^3Меню экипировки уже будет открыто при возраждении!
-MENU_ALREADY_OPENED = ^3Меню экипировки уже открыто!
 FREEBUYTIME_PASSED = %0.f секунд прошло. ^rВы не можете больше покупать!
 
 SPAWN_EDITOR = \yРедактор точек возрождения^n^n
