@@ -189,7 +189,7 @@ public ClCmd_EnableMenu(const pPlayer)
 	if(g_iEquipMode != EQUIP_MENU)
 		return PLUGIN_HANDLED
 
-	if(is_user_alive(pPlayer) && IsPlayerNotUsed(pPlayer) || g_bAlwaysOpenMenu) {
+	if((is_user_alive(pPlayer) && IsPlayerNotUsed(pPlayer)) || g_bAlwaysOpenMenu) {
 		MenuShow_EquipMenu(pPlayer)
 		return PLUGIN_HANDLED
 	}
@@ -535,6 +535,9 @@ GiveAutoItems(const pPlayer)
 
 GiveWeapon(const pPlayer, eData[equip_data_s])
 {
+	if(!is_user_alive(pPlayer))
+		return;
+
 	new WeaponIdType:iId = eData[iWeaponID]
 	rg_give_item(pPlayer, eData[szWeaponName], (GRENADE_BS & (1 << any:iId)) ? GT_APPEND : GT_REPLACE)
 
