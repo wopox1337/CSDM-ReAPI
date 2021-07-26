@@ -675,7 +675,3 @@ stock bool:IsHullVacant(const Float:vecOrigin[coord_e], const iHullNumber, const
 
 	return bool:(!get_tr2(ptr, TR_StartSolid) && !get_tr2(ptr, TR_AllSolid) && get_tr2(ptr, TR_InOpen))
 }
-
-
-
-

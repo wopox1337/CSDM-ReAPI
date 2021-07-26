@@ -228,7 +228,3 @@ stock KillWeaponBoxBomb(const pWeaponBox)
 		message_end()
 	}
 }
-
-
-
-

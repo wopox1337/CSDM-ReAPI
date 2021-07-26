@@ -508,4 +508,3 @@ bool:CheckNativeParams(const iParams, const iMin, const iMax)
 
 	return true
 }
-

@@ -279,37 +279,37 @@ public BuyWeaponByWeaponID(const pPlayer, const WeaponIdType:weaponID)
 
 // Menus
 MenuShow_EquipMenu(const pPlayer) {
-  if(!is_user_connected(pPlayer))
+	if(!is_user_connected(pPlayer))
+		return PLUGIN_HANDLED
+
+	new menu = menu_create(fmt("%L", pPlayer, "EQUIP_MENU"), "MenuHandler_EquipMenu")
+
+	static callback
+	if(!callback)
+		callback = menu_makecallback("MenuCallback_EquipMenu")
+
+	menu_additem(menu, fmt("%L", pPlayer, "NEW_WEAPONS"), .callback = callback)
+	menu_additem(menu, fmt("%L", pPlayer, "PREVIOUS_SETUP"), .callback = callback)
+	menu_additem(menu, fmt("%L", pPlayer, "DONT_SHOW_MENU_AGAIN"), .callback = callback)
+	menu_additem(menu, fmt("%L", pPlayer, "RANDOM_SELECTION"), .callback = callback)
+
+	if(g_iNumSecondary || g_iNumPrimary)
+		menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
+
+	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
+
+	menu_display(pPlayer, menu, .time = 10)
 	return PLUGIN_HANDLED
-
-  new menu = menu_create(fmt("%L", pPlayer, "EQUIP_MENU"), "MenuHandler_EquipMenu")
-
-  static callback
-  if(!callback)
-	callback = menu_makecallback("MenuCallback_EquipMenu")
-
-  menu_additem(menu, fmt("%L", pPlayer, "NEW_WEAPONS"), .callback = callback)
-  menu_additem(menu, fmt("%L", pPlayer, "PREVIOUS_SETUP"), .callback = callback)
-  menu_additem(menu, fmt("%L", pPlayer, "DONT_SHOW_MENU_AGAIN"), .callback = callback)
-  menu_additem(menu, fmt("%L", pPlayer, "RANDOM_SELECTION"), .callback = callback)
-
-  if(g_iNumSecondary || g_iNumPrimary)
-    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
-
-  menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
-
-  menu_display(pPlayer, menu, .time = 10)
-  return PLUGIN_HANDLED
 }
 
 public MenuCallback_EquipMenu(const pPlayer, const menu, const EquipMenu_s:item) {
-  if(!g_iNumSecondary && !g_iNumPrimary)
-    return ITEM_DISABLED
+	if(!g_iNumSecondary && !g_iNumPrimary)
+		return ITEM_DISABLED
 
-  if((item == em_previous || item == em_dontShowAgain) && IsPlayerNotUsed(pPlayer))
-    return ITEM_DISABLED
+	if((item == em_previous || item == em_dontShowAgain) && IsPlayerNotUsed(pPlayer))
+		return ITEM_DISABLED
 
-  return ITEM_IGNORE
+	return ITEM_IGNORE
 }
 
 public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
@@ -380,7 +380,7 @@ MenuShow_SecondaryWeapons(const pPlayer) {
 	AddItemsToMenu(menu, g_aArrays[Secondary], g_iNumSecondary)
 
 	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
- 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
+	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
 
 	menu_display(pPlayer, menu)
 }

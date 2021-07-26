@@ -176,4 +176,3 @@ stock SendStatusIcon(const pPlayer, iStatus = STATUSICON_HIDE, red = 0, green = 
 		message_end()
 	}
 }
-

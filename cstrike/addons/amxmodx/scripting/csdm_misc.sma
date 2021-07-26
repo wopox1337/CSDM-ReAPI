@@ -168,6 +168,3 @@ CheckForwards()
 		iMsgHookHideWeapon = 0
 	}
 }
-
-
-

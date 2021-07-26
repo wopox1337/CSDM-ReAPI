@@ -16,7 +16,7 @@
 stock const CSDM_PLUGIN_NAME[] = "CSDM Core"
 
 #if !defined CSDM_VERSION
-  #define CSDM_VERSION "%VERSION%"
+	#define CSDM_VERSION "%VERSION%"
 #endif
 
 stock const g_szMainDir[] = "csdm"
