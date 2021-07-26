@@ -48,6 +48,14 @@ enum
 	BUYZONE_TRIGGER_OFF
 }
 
+enum EquipMenu_s
+{
+	em_newWeapons,
+	em_previous,
+	em_dontShowAgain,
+	em_random
+}
+
 new HookChain:g_hGiveDefaultItems, HookChain:g_hBuyWeaponByWeaponID, HookChain:g_hHasRestrictItem
 new Array:g_aArrays[arraylist_e], Trie:g_tCheckItemName
 new g_iPreviousSecondary[MAX_CLIENTS + 1], g_iPreviousPrimary[MAX_CLIENTS + 1], bool:g_bOpenMenu[MAX_CLIENTS + 1]
@@ -56,7 +64,6 @@ new Float:g_flPlayerBuyTime[MAX_CLIENTS + 1]
 new g_iSecondarySection, g_iPrimarySection, g_iBotSecondarySection, g_iBotPrimarySection
 new g_iNumPrimary, g_iNumSecondary, g_iNumBotPrimary, g_iNumBotSecondary, g_iNumAutoItems
 
-new g_iEquipMenuID, g_iEquipMenuCB, g_iSecondaryMenuID, g_iPrimaryMenuID
 new EquipTypes:g_iEquipMode = EQUIP_MENU, bool:g_bBlockDefaultItems = true
 new bool:g_bAlwaysOpenMenu, Float:g_flFreeBuyTime, g_iFreeBuyMoney
 new bool:g_bHasMapParameters, mp_maxmoney
@@ -89,7 +96,6 @@ public CSDM_Initialized(const szVersion[])
 
 public plugin_cfg()
 {
-	BuildMenus()
 	CheckForwards()
 }
 
@@ -183,23 +189,8 @@ public ClCmd_EnableMenu(const pPlayer)
 	if(g_iEquipMode != EQUIP_MENU)
 		return PLUGIN_HANDLED
 
-	if(IsViewingMenu(pPlayer))
-		return PLUGIN_HANDLED
-
-	if(IsPlayerNotUsed(pPlayer) && is_user_alive(pPlayer))
-	{
-		menu_display(pPlayer, g_iEquipMenuID)
-		return PLUGIN_HANDLED
-	}
-	else if(g_bAlwaysOpenMenu && is_user_alive(pPlayer))
-	{
-		menu_display(pPlayer, g_iEquipMenuID)
-		return PLUGIN_HANDLED
-	}
-
-	if(g_bOpenMenu[pPlayer])
-	{
-		client_print_color(pPlayer, print_team_red, "^4[CSDM] %L", pPlayer, "MENU_ALREADY_ENABLED")
+	if(is_user_alive(pPlayer) && IsPlayerNotUsed(pPlayer) || g_bAlwaysOpenMenu) {
+		MenuShow_EquipMenu(pPlayer)
 		return PLUGIN_HANDLED
 	}
 
@@ -241,7 +232,7 @@ public CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
 	{
 		if(g_bOpenMenu[pPlayer])
 		{
-			menu_display(pPlayer, g_iEquipMenuID)
+			MenuShow_EquipMenu(pPlayer)
 		}
 		else
 		{
@@ -253,15 +244,6 @@ public CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
 	{
 		RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
 		RandomWeapons(pPlayer, g_aArrays[Primary], g_iNumPrimary)
-	}
-}
-
-public CSDM_PlayerKilled(const pVictim, const pKiller, const HitBoxGroup:iLastHitGroup)
-{
-	if(g_iEquipMode == EQUIP_MENU && IsViewingMenu(pVictim))
-	{
-		menu_cancel(pVictim)
-		show_menu(pVictim, 0, "^n", 1)
 	}
 }
 
@@ -296,32 +278,62 @@ public BuyWeaponByWeaponID(const pPlayer, const WeaponIdType:weaponID)
 }
 
 // Menus
-public EquipMenuHandler(const pPlayer, const iMenu, const iItem)
-{
-	if(iItem == MENU_EXIT || iItem < 0)
+MenuShow_EquipMenu(const pPlayer) {
+  if(!is_user_connected(pPlayer))
+	return PLUGIN_HANDLED
+
+  new menu = menu_create(fmt("%L", pPlayer, "EQUIP_MENU"), "MenuHandler_EquipMenu")
+
+  static callback
+  if(!callback)
+	callback = menu_makecallback("MenuCallback_EquipMenu")
+
+  menu_additem(menu, fmt("%L", pPlayer, "NEW_WEAPONS"), .callback = callback)
+  menu_additem(menu, fmt("%L", pPlayer, "PREVIOUS_SETUP"), .callback = callback)
+  menu_additem(menu, fmt("%L", pPlayer, "DONT_SHOW_MENU_AGAIN"), .callback = callback)
+  menu_additem(menu, fmt("%L", pPlayer, "RANDOM_SELECTION"), .callback = callback)
+
+  if(g_iNumSecondary || g_iNumPrimary)
+    menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
+
+  menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
+
+  menu_display(pPlayer, menu, .time = 10)
+  return PLUGIN_HANDLED
+}
+
+public MenuCallback_EquipMenu(const pPlayer, const menu, const EquipMenu_s:item) {
+  if(!g_iNumSecondary && !g_iNumPrimary)
+    return ITEM_DISABLED
+
+  if((item == em_previous || item == em_dontShowAgain) && IsPlayerNotUsed(pPlayer))
+    return ITEM_DISABLED
+
+  return ITEM_IGNORE
+}
+
+public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
+	menu_destroy(menu)
+
+	if(item < 0)
 		return PLUGIN_HANDLED
 
-	new szNum[3], iAccess, hCallback
-	menu_item_getinfo(iMenu, iItem, iAccess, szNum, charsmax(szNum), .callback = hCallback)
-
-	switch(str_to_num(szNum))
-	{
-		case 1: menu_display(pPlayer, g_iNumSecondary ? g_iSecondaryMenuID : g_iPrimaryMenuID)
-		case 2:
-		{
+	switch(item) {
+		case em_newWeapons: {
+			g_iNumSecondary ? MenuShow_SecondaryWeapons(pPlayer) : MenuShow_PrimaryWeapons(pPlayer)
+		}
+		case em_previous: {
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
 		}
-		case 3:
-		{
+		case em_dontShowAgain: {
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
 
 			client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_HELP_GUNS")
 			g_bOpenMenu[pPlayer] = false
 		}
-		case 4:
-		{
+		case em_random: {
 			g_iPreviousSecondary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
 			g_iPreviousPrimary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Primary], g_iNumPrimary)
 		}
@@ -330,54 +342,62 @@ public EquipMenuHandler(const pPlayer, const iMenu, const iItem)
 	return PLUGIN_HANDLED
 }
 
-public EquipMenuCallback(const pPlayer, const iMenu, const iItem)
-{
-	if(iItem < 0)
-		return PLUGIN_HANDLED
+MenuShow_PrimaryWeapons(const pPlayer) {
+	if(!is_user_connected(pPlayer))
+		return;
 
-	new szNum[3], iAccess, hCallback
-	menu_item_getinfo(iMenu, iItem, iAccess, szNum, charsmax(szNum), .callback = hCallback)
+	new menu = menu_create(fmt("%L", pPlayer, "PRIMARY_WEAPONS"), "MenuHandler_PrimaryWeapons")
 
-	if(!g_iNumSecondary && !g_iNumPrimary)
-		return ITEM_DISABLED
+	AddItemsToMenu(menu, g_aArrays[Primary], g_iNumPrimary)
 
-	if((szNum[0] == '2' || szNum[0] == '3') && IsPlayerNotUsed(pPlayer))
-		return ITEM_DISABLED
+	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
+	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
 
-	return ITEM_IGNORE
+	menu_display(pPlayer, menu)
 }
 
-public SecondaryMenuHandler(const pPlayer, const iMenu, const iItem)
-{
-	if(iItem == MENU_EXIT || iItem < 0)
+public MenuHandler_PrimaryWeapons(const pPlayer, const menu, const item) {
+	menu_destroy(menu)
+
+	if(item < 0)
 		return PLUGIN_HANDLED
 
-	new szNum[3], iAccess, hCallback
-	menu_item_getinfo(iMenu, iItem, iAccess, szNum, charsmax(szNum), .callback = hCallback)
-
-	new eWeaponData[equip_data_s], iItemIndex = str_to_num(szNum)
-	ArrayGetArray(g_aArrays[Secondary], iItemIndex, eWeaponData)
+	new eWeaponData[equip_data_s]
+	ArrayGetArray(g_aArrays[Primary], item, eWeaponData)
 
 	GiveWeapon(pPlayer, eWeaponData)
-	g_iPreviousSecondary[pPlayer] = iItemIndex
+	g_iPreviousPrimary[pPlayer] = item
 
-	menu_display(pPlayer, g_iPrimaryMenuID)
 	return PLUGIN_HANDLED
 }
 
-public PrimaryMenuHandler(const pPlayer, const iMenu, const iItem)
-{
-	if(iItem == MENU_EXIT || iItem < 0)
+MenuShow_SecondaryWeapons(const pPlayer) {
+	if(!is_user_connected(pPlayer))
+		return;
+
+	new menu = menu_create(fmt("%L", pPlayer, "SECONDARY_WEAPONS"), "MenuHandler_SecondaryWeapons")
+
+	AddItemsToMenu(menu, g_aArrays[Secondary], g_iNumSecondary)
+
+	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
+ 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
+
+	menu_display(pPlayer, menu)
+}
+
+public MenuHandler_SecondaryWeapons(const pPlayer, const menu, const item) {
+	menu_destroy(menu)
+
+	if(item < 0)
 		return PLUGIN_HANDLED
 
-	new szNum[3], iAccess, hCallback
-	menu_item_getinfo(iMenu, iItem, iAccess, szNum, charsmax(szNum), .callback = hCallback)
-
-	new eWeaponData[equip_data_s], iItemIndex = str_to_num(szNum)
-	ArrayGetArray(g_aArrays[Primary], iItemIndex, eWeaponData)
+	new eWeaponData[equip_data_s]
+	ArrayGetArray(g_aArrays[Secondary], item, eWeaponData)
 
 	GiveWeapon(pPlayer, eWeaponData)
-	g_iPreviousPrimary[pPlayer] = iItemIndex
+	g_iPreviousSecondary[pPlayer] = item
+
+	MenuShow_PrimaryWeapons(pPlayer)
 
 	return PLUGIN_HANDLED
 }
@@ -540,45 +560,14 @@ WeaponIdType:GetWeaponIndex(const szClassName[])
 	return iId
 }
 
-BuildMenus()
-{
-	g_iEquipMenuID = MenuCrate("EQUIP_MENU", "EquipMenuHandler", bool:(!g_iNumSecondary && !g_iNumPrimary))
-	g_iEquipMenuCB = menu_makecallback("EquipMenuCallback")
-
-	menu_additem(g_iEquipMenuID, "NEW_WEAPONS", "1", .callback = g_iEquipMenuCB)
-	menu_additem(g_iEquipMenuID, "PREVIOUS_SETUP", "2", .callback = g_iEquipMenuCB)
-	menu_additem(g_iEquipMenuID, "DONT_SHOW_MENU_AGAIN", "3", .callback = g_iEquipMenuCB)
-	menu_additem(g_iEquipMenuID, "RANDOM_SELECTION", "4", .callback = g_iEquipMenuCB)
-
-	g_iSecondaryMenuID = MenuCrate("SEC_WEAPONS", "SecondaryMenuHandler")
-	AddItemsToMenu(g_iSecondaryMenuID, g_aArrays[Secondary], g_iNumSecondary)
-
-	g_iPrimaryMenuID = MenuCrate("PRI_WEAPONS", "PrimaryMenuHandler")
-	AddItemsToMenu(g_iPrimaryMenuID, g_aArrays[Primary], g_iNumPrimary)
-}
-
-MenuCrate(const szTitle[], const szHandler[], const bAddExitKey = false)
-{
-	new iMenu = menu_create(szTitle, szHandler, .ml = true)
-	if(!bAddExitKey) {
-		menu_setprop(iMenu, MPROP_EXIT, MEXIT_NEVER)
-	}
-
-	menu_setprop(iMenu, MPROP_NUMBER_COLOR, "\y")
-	return iMenu
-}
-
-AddItemsToMenu(const iMenu, const Array:aArrayName, const iArraySize)
-{
-	if(!iArraySize)
+AddItemsToMenu(const menu, const Array:array, const arraySize) {
+	if(!arraySize)
 		return
 
-	new eWeaponData[equip_data_s], szNum[3], i
-	for(i = 0; i < iArraySize; i++)
-	{
-		ArrayGetArray(aArrayName, i, eWeaponData)
-		num_to_str(i, szNum, charsmax(szNum))
-		menu_additem(iMenu, eWeaponData[szDisplayName], szNum)
+	new eWeaponData[equip_data_s]
+	for(new i = 0; i < arraySize; i++)	{
+		ArrayGetArray(array, i, eWeaponData)
+		menu_additem(menu, eWeaponData[szDisplayName])
 	}
 }
 
@@ -656,18 +645,3 @@ bool:SetStateBuyZone(const iAction)
 
 	return false
 }
-
-bool:IsViewingMenu(const pPlayer)
-{
-	new iMenuID, iOldMenu
-	if(is_user_connected(pPlayer) && player_menu_info(pPlayer, iOldMenu, iMenuID))
-	{
-		if(iMenuID == g_iEquipMenuID || iMenuID == g_iSecondaryMenuID || iMenuID == g_iPrimaryMenuID) {
-			return true
-		}
-	}
-
-	return false
-}
-
-
