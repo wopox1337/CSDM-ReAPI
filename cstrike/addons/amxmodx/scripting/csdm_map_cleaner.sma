@@ -110,7 +110,7 @@ public Entity_SetModel(const pEntity, const szModel[]) <SetModel_Enabled>
 {
 	state SetModel_Disabled
 
-	if(pEntity > 0)
+	if(!is_nullent(pEntity))
 	{
 		if(!g_bExcludeBomb && get_member(pEntity, m_WeaponBox_bIsBomb))
 		{
