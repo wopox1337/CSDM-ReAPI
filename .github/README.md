@@ -5,14 +5,14 @@
 <p align="center">AMXModX plugin for provide Deathmatch mode with rich functionality and API.</p>
 
 <p align="center">
-  <a href="https://github.com/wopox1337/CSDM-ReAPI/releases/latest">
+    <a href="https://github.com/wopox1337/CSDM-ReAPI/releases/latest">
     <img src="https://img.shields.io/github/downloads/wopox1337/CSDM-ReAPI/total?label=Download%40latest&style=flat-square&logo=github&logoColor=white"
          alt="Build status">
     <a href="https://github.com/wopox1337/CSDM-ReAPI/actions">
     <img src="https://img.shields.io/github/workflow/status/wopox1337/CSDM-ReAPI/Build/master?style=flat-square&logo=github&logoColor=white"
          alt="Build status">
     <a href="https://github.com/wopox1337/CSDM-ReAPI/releases">
-    <img src="https://img.shields.io/github/v/release/wopox1337/CSDM-ReAPI/?include_prereleases&style=flat-square&logo=github&logoColor=white"
+    <img src="https://img.shields.io/github/v/release/wopox1337/CSDM-ReAPI?include_prereleases&style=flat-square&logo=github&logoColor=white"
          alt="Release">
     <a href="https://www.amxmodx.org/downloads-new.php">
     <img src="https://img.shields.io/badge/AMXModX-%3E%3D1.9.0-blue?style=flat-square"
