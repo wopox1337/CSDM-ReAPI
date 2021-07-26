@@ -1,45 +1,87 @@
-![enter image description here](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11oXQFybzvtvmso2SeJqs_jHxFuu-iq5iORrjIGUUQDhE3vFxVg)
+<h1 align="center">
+  <a href="https://github.com/wopox1337/CSDM-ReAPI/releases"><img src="https://user-images.githubusercontent.com/18553678/126974290-c1b301e7-6e8c-4b35-8e5e-440e9fe3ddc2.png" width="500px" alt="CSDM Reapi releases"></a>
+</h1>
 
-[![Actions Status](https://github.com/DevCSru/CSDM-ReAPI/workflows/Build/badge.svg)](https://github.com/DevCSru/CSDM-ReAPI/actions)</br>
+<p align="center">AMXModX plugin for provide Deathmatch mode with rich functionality and API.</p>
 
-# Counter Strike Deathmatch [ReAPI version]
-# Description:
-Players have an infinite number of respawns with full armor, and will
-return within seconds of their death. Once the player is reborn, the
-player will be invulnerable for a few seconds,this time will allow the
-player to access the selection of weapons. Ammunition is infinite, and
-any weapon can be bought (or taken from the menu), regardless of cost,
-except for equipment like the C4 and the Defense Kit. The purchase of
-weapons can be blocked or random, depending on which player chooses to
-use. Once the player starts moving or shooting, the invulnerability is
-removed and the purchase menu will no longer be available. Killing
-enemies player will gain points, not money or new weapons. Also a
-possible mode of domination (superiority of the enemy on points).
-Weapons cannot be thrown away and players will not drop weapons when
-they are killed. Fire on their own and collision disabled.
+<p align="center">
+  <a href="https://github.com/wopox1337/CSDM-ReAPI/releases/latest">
+    <img src="https://img.shields.io/github/downloads/wopox1337/CSDM-ReAPI/total?label=Download%40latest&style=flat-square&logo=github&logoColor=white"
+         alt="Build status">
+    <a href="https://github.com/wopox1337/CSDM-ReAPI/actions">
+    <img src="https://img.shields.io/github/workflow/status/wopox1337/CSDM-ReAPI/Build/master?style=flat-square&logo=github&logoColor=white"
+         alt="Build status">
+    <a href="https://github.com/wopox1337/CSDM-ReAPI/releases">
+    <img src="https://img.shields.io/github/v/release/wopox1337/CSDM-ReAPI/?include_prereleases&style=flat-square&logo=github&logoColor=white"
+         alt="Release">
+    <a href="https://www.amxmodx.org/downloads-new.php">
+    <img src="https://img.shields.io/badge/AMXModX-%3E%3D1.9.0-blue?style=flat-square"
+         alt="AMXModX dependency">
+    <a href="https://gitter.im/CSDM-ReAPI/Development?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
+    <img src="https://img.shields.io/badge/discussions-on%20gitter-informational?style=flat-square&logo=googlechat"
+         alt="Gitter">
+</p>
+      
+<p align="center">
+  <a href="#about">About</a> •
+  <a href="#requirements">Requirements</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#updating">Updating</a> •
+  <a href="#downloads">Downloads</a> •
+  <a href="#features">Features</a> •
+  <a href="#wiki">Wiki</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="#credits">Credits</a>
+</p>
 
+---
 
-#### Requirments
- - [**AmxModX 1.10 - build
-   5233**](https://www.amxmodx.org/downloads-new.php?branch=master)
- - [ReAPI](https://github.com/s1lentq/reapi)
+## About
+- TODO
 
-#### Includes the following components:
+## Requirements
+- HLDS installed;
+- [ReGameDLL](https://github.com/s1lentq/ReGameDLL_CS) installed;
+- Installed AMXModX ([`v1.9`](https://www.amxmodx.org/downloads-new.php) or [`v1.10`](https://www.amxmodx.org/downloads-new.php?branch=master));
+    - Installed [ReAPI](https://github.com/s1lentq/reapi) module; 
+      
+## Installation
+- [Download the latest](https://github.com/wopox1337/CSDM-ReAPI/releases/latest) stable version from the release section.
+- Extract the `cstrike` folder to the root folder of the HLDS server;
+- Make sure that all plugins are running and in the correct order, using the `amxx list` command.
 
-> ##### CSDM Core
- The main core of the system implements uploading / file management configuration, game mode, add-on system, API system.
-> ##### CSDM
-Equipment Manager the player's equipment Manager. Makes an add-on player inventory, allows the player to manage inventory using
-menu.
-> ##### CSDM Map Cleaner
-Clears maps from foreign objects that interfere gameplay.
-> ##### CSDM Misc
-Addition to the gameplay of the game, contains settings silencer for weapons.
-> ##### CSDM Protection
-The system of protection of the player during revival of the game.
-> ##### CSDM Spawn Manager
-Spawn point editor players.
+## Updating
+- Put new plugins and lang-files (`plugins/*.amxx` & `data/lang/*.txt`) into `amxmodx/` folder on the HLDS server;
+- Restart the server (command `restart` or change the map);
+- Make sure that the versions of the plugins are up to date with the command `amxx list`.
 
-#### Changes in the [fork] version:
- 1. Added multilingual support;
- 2. Fixed compilation errors;
+## Downloads
+- [Release builds](https://github.com/wopox1337/CSDM-ReAPI/releases)
+- [Dev builds](https://github.com/wopox1337/CSDM-ReAPI/actions/workflows/build.yml)
+      
+## Features
+- TODO
+
+## Wiki
+Do you **need some help**? Check the _articles_ from the [wiki](https://github.com/wopox1337/CSDM-ReAPI/wiki).
+
+## Contributing
+Got **something interesting** you'd like to **share**? Learn about [contributing](CONTRIBUTING.md).
+
+## Credits
+> Thanks to [@Vaqtincha](https://github.com/Vaqtincha) for the original implementation of the mod on ReAPI.
+
+I would like to thank the creators of AMXModX and ReAPI and everyone who helps me in developing and testing this system, who supports my interest.
+      
+**Thank you guys! 👍**
+
+## Support
+Reach out to me at one of the following places:
+- Github issues;
+- Github discussions;
+- [Telegram](https://t.me/ShorokhovSergey);
+- E-Mail;
+
+## License
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+ Copyright © Sergey Shorokhov
