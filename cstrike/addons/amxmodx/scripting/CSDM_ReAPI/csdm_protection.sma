@@ -20,7 +20,6 @@ enum
 new bool:g_bIsProtected[MAX_CLIENTS + 1]
 new g_iMaxPlayers
 
-new g_szSpriteName[18] = "suithelmet_full" // max lenght = 16
 new Float:g_flRenderAlpha = 10.0, bool:g_bBlockDamage = true, Float: g_fImmunityTime;
 new Float:g_flTeamColors[TeamName][color_e] =
 {
@@ -100,11 +99,6 @@ public ReadCfg(const szLineData[], const iSectionID)
 	{
 		g_bBlockDamage = bool:(str_to_num(szValue))
 	}
-	else if(equali(szKey, "sprite_name"))
-	{
-		copy(g_szSpriteName, charsmax(g_szSpriteName), szValue)
-		strtolower(g_szSpriteName)
-	}
 	else if(equali(szKey, "render_color_", 13))
 	{
 		new szRed[4], szGreen[4], szBlue[4]
@@ -144,35 +138,4 @@ SetEffects(const pPlayer, Float: time)
 		rg_set_rendering(pPlayer, kRenderFxGlowShell, flColor, g_flRenderAlpha)
 	}
 	else rg_set_rendering(pPlayer, kRenderFxGlowShell, g_flTeamColors[iTeam], g_flRenderAlpha)
-
-	if(g_szSpriteName[0] && time >= 1.5) {
-		SendStatusIcon(pPlayer, STATUSICON_FLASH)
-	}
-}
-
-RemoveEffects(const pPlayer)
-{
-	if(is_user_connected(pPlayer))
-	{
-		rg_set_rendering(pPlayer)
-
-		if(g_szSpriteName[0]) {
-			SendStatusIcon(pPlayer)
-		}
-	}
-}
-
-stock SendStatusIcon(const pPlayer, iStatus = STATUSICON_HIDE, red = 0, green = 160, blue = 0)
-{
-	static iMsgIdStatusIcon
-	if(iMsgIdStatusIcon || (iMsgIdStatusIcon = get_user_msgid("StatusIcon")))
-	{
-		message_begin(MSG_ONE_UNRELIABLE, iMsgIdStatusIcon, .player = pPlayer)
-		write_byte(iStatus)			// status: 0 - off, 1 - on, 2 - flash
-		write_string(g_szSpriteName)
-		write_byte(red)
-		write_byte(green)
-		write_byte(blue)
-		message_end()
-	}
 }
