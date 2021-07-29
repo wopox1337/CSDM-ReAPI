@@ -98,3 +98,11 @@ SetEffects(const pPlayer)
 
 	rg_set_rendering(pPlayer, kRenderFxGlowShell, flColor, g_flRenderAlpha)
 }
+
+RemoveEffects(const pPlayer)
+{
+	if(is_user_connected(pPlayer))
+	{
+		rg_set_rendering(pPlayer)
+	}
+}
