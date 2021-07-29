@@ -2,27 +2,9 @@
 #include <csdm>
 
 
-#define IsPlayer(%1)				(1 <= (%1) <= g_iMaxPlayers)
-#define PlayerTask(%1)				(%1 + PROTECTION_TASK_ID)
-#define GetPlayerByTaskID(%1)		(%1 - PROTECTION_TASK_ID)
-
-const PROTECTION_TASK_ID = 216897
-
-enum color_e { Float:R, Float:G, Float:B }
-
-enum
-{
-	STATUSICON_HIDE,
-	STATUSICON_SHOW,
-	STATUSICON_FLASH
-}
-
-new bool:g_bIsProtected[MAX_CLIENTS + 1]
-new g_iMaxPlayers
-
-new Float:g_flRenderAlpha = 10.0, bool:g_bBlockDamage = true, Float: g_fImmunityTime;
-new Float:g_flTeamColors[TeamName][color_e] =
-{
+new Float:g_fImmunityTime
+new Float:g_flRenderAlpha = 10.0
+new Float:g_flTeamColors[TeamName][3] = {
 	{0.0, 0.0, 0.0},
 	{235.0, 0.0, 0.0}, // TEAM_TERRORIST
 	{0.0, 0.0, 235.0}, // TEAM_CT
@@ -38,16 +20,8 @@ public plugin_init()
 {
 	register_plugin("CSDM Protection", CSDM_VERSION, "wopox1337")
 
-	if(g_fImmunityTime > 0.0) {
-		if(g_bBlockDamage)
-			RegisterHookChain(RG_CSGameRules_FPlayerCanTakeDamage, "CSGameRules_FPlayerCanTakeDmg", .post = false)
-
-		RegisterHookChain(RG_CBasePlayer_SetSpawnProtection, "CBasePlayer_SetSpawnProtection", .post = true)
-		RegisterHookChain(RG_CBasePlayer_RemoveSpawnProtection, "CBasePlayer_RemoveSpawnProtection", .post = true)
-
-	}
-
-	g_iMaxPlayers = get_maxplayers()
+	RegisterHookChain(RG_CBasePlayer_SetSpawnProtection, "CBasePlayer_SetSpawnProtection", .post = true)
+	RegisterHookChain(RG_CBasePlayer_RemoveSpawnProtection, "CBasePlayer_RemoveSpawnProtection", .post = true)
 }
 
 public CSDM_Initialized(const szVersion[])
@@ -63,26 +37,12 @@ public CSDM_ConfigurationLoad(const ReadTypes:iReadAction)
 
 public CBasePlayer_SetSpawnProtection(const pPlayer, Float: time)
 {
-	SetEffects(pPlayer, time)
+	SetEffects(pPlayer)
 }
 
 public CBasePlayer_RemoveSpawnProtection(const pPlayer)
 {
 	RemoveEffects(pPlayer)
-}
-
-public CSGameRules_FPlayerCanTakeDmg(const pPlayer, const pAttacker)
-{
-	if(pPlayer == pAttacker || !IsPlayer(pAttacker))
-		return HC_CONTINUE
-
-	if(g_bIsProtected[pAttacker]) // protected attacker can't take damage
-	{
-		SetHookChainReturn(ATYPE_INTEGER, false)
-		return HC_SUPERCEDE
-	}
-
-	return HC_CONTINUE
 }
 
 public ReadCfg(const szLineData[], const iSectionID)
@@ -95,10 +55,6 @@ public ReadCfg(const szLineData[], const iSectionID)
 	{
 		g_fImmunityTime = str_to_float(szValue)
 	}
-	else if(equali(szKey, "block_damage"))
-	{
-		g_bBlockDamage = bool:(str_to_num(szValue))
-	}
 	else if(equali(szKey, "render_color_", 13))
 	{
 		new szRed[4], szGreen[4], szBlue[4]
@@ -107,13 +63,13 @@ public ReadCfg(const szLineData[], const iSectionID)
 
 		if(parse(szValue, szRed, charsmax(szRed), szGreen, charsmax(szGreen), szBlue, charsmax(szBlue)) == 3)
 		{
-			g_flTeamColors[iTeam][R] = floatclamp(str_to_float(szRed), 1.0, 255.0)
-			g_flTeamColors[iTeam][G] = floatclamp(str_to_float(szGreen), 1.0, 255.0)
-			g_flTeamColors[iTeam][B] = floatclamp(str_to_float(szBlue), 1.0, 255.0)
+			g_flTeamColors[iTeam][0] = floatclamp(str_to_float(szRed), 1.0, 255.0)
+			g_flTeamColors[iTeam][1] = floatclamp(str_to_float(szGreen), 1.0, 255.0)
+			g_flTeamColors[iTeam][2] = floatclamp(str_to_float(szBlue), 1.0, 255.0)
 		}
 		else if(equali(szValue, "random"))
 		{
-			g_flTeamColors[iTeam][R] = g_flTeamColors[iTeam][G] = g_flTeamColors[iTeam][B] = 0.0
+			g_flTeamColors[iTeam][0] = g_flTeamColors[iTeam][1] = g_flTeamColors[iTeam][2] = 0.0
 		}
 	}
 	else if(equali(szKey, "render_alpha"))
@@ -122,20 +78,23 @@ public ReadCfg(const szLineData[], const iSectionID)
 	}
 }
 
-SetEffects(const pPlayer, Float: time)
+SetEffects(const pPlayer)
 {
 // https://github.com/s1lentq/ReGameDLL_CS/blob/bc2c3176e46e2c32ebc0110e7df879ea7ddbfafa/regamedll/dlls/player.cpp#L9532
 	set_entvar(pPlayer, var_rendermode, kRenderFxNone)
 
 	new TeamName:iTeam = get_member(pPlayer, m_iTeam)
-	if(!g_flTeamColors[iTeam][R] && !g_flTeamColors[iTeam][G] && !g_flTeamColors[iTeam][B])
-	{
-		new Float:flColor[color_e]
-		flColor[R] = random_float(1.0, 255.0)
-		flColor[G] = random_float(1.0, 255.0)
-		flColor[B] = random_float(1.0, 255.0)
+	new bool: isRandomColor = (!g_flTeamColors[iTeam][0] && !g_flTeamColors[iTeam][1] && !g_flTeamColors[iTeam][2])
+	if(!isRandomColor) {
+		rg_set_rendering(pPlayer, kRenderFxGlowShell, g_flTeamColors[iTeam], g_flRenderAlpha)
 
-		rg_set_rendering(pPlayer, kRenderFxGlowShell, flColor, g_flRenderAlpha)
+		return
 	}
-	else rg_set_rendering(pPlayer, kRenderFxGlowShell, g_flTeamColors[iTeam], g_flRenderAlpha)
+
+	new Float:flColor[3]
+	flColor[0] = random_float(1.0, 255.0)
+	flColor[1] = random_float(1.0, 255.0)
+	flColor[2] = random_float(1.0, 255.0)
+
+	rg_set_rendering(pPlayer, kRenderFxGlowShell, flColor, g_flRenderAlpha)
 }
