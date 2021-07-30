@@ -298,7 +298,7 @@ MenuShow_EquipMenu(const pPlayer) {
 
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
 
-	menu_display(pPlayer, menu, .time = 10)
+	menu_display(pPlayer, menu)
 	return PLUGIN_HANDLED
 }
 
