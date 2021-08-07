@@ -75,7 +75,7 @@ public plugin_init()
 	register_dictionary("csdm_reapi.txt")
 	register_dictionary("common.txt")
 
-	for(new i = 0; i < sizeof(g_szEquipMenuCmds)-1; i++)
+	for(new i = 0; i < sizeof(g_szEquipMenuCmds); i++)
 	{
 		register_clcmd(g_szEquipMenuCmds[i], "ClCmd_EnableMenu")
 	}
