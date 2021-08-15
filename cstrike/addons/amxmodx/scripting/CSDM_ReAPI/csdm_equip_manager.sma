@@ -53,12 +53,13 @@ enum EquipMenu_s
 	em_newWeapons,
 	em_previous,
 	em_dontShowAgain,
-	em_random
+	em_random,
+	em_always_random
 }
 
 new HookChain:g_hGiveDefaultItems, HookChain:g_hBuyWeaponByWeaponID, HookChain:g_hHasRestrictItem
 new Array:g_aArrays[arraylist_e], Trie:g_tCheckItemName
-new g_iPreviousSecondary[MAX_CLIENTS + 1], g_iPreviousPrimary[MAX_CLIENTS + 1], bool:g_bOpenMenu[MAX_CLIENTS + 1]
+new g_iPreviousSecondary[MAX_CLIENTS + 1], g_iPreviousPrimary[MAX_CLIENTS + 1], bool:g_bOpenMenu[MAX_CLIENTS + 1], bool:g_bAlwaysRandom[MAX_CLIENTS + 1]
 new Float:g_flPlayerBuyTime[MAX_CLIENTS + 1]
 
 new g_iSecondarySection, g_iPrimarySection, g_iBotSecondarySection, g_iBotPrimarySection
@@ -181,6 +182,7 @@ public client_putinserver(pPlayer)
 {
 	g_iPreviousSecondary[pPlayer] = g_iPreviousPrimary[pPlayer] = INVALID_INDEX
 	g_bOpenMenu[pPlayer] = true
+	g_bAlwaysRandom[pPlayer] = false
 	g_flPlayerBuyTime[pPlayer] = 0.0
 }
 
@@ -196,6 +198,7 @@ public ClCmd_EnableMenu(const pPlayer)
 
 	client_print_color(pPlayer, print_team_blue, "^4[CSDM] %L", pPlayer, "MENU_WILL_BE_OPENED")
 	g_bOpenMenu[pPlayer] = true
+	g_bAlwaysRandom[pPlayer] = false
 
 	return PLUGIN_HANDLED
 }
@@ -234,10 +237,16 @@ public CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
 		{
 			MenuShow_EquipMenu(pPlayer)
 		}
-		else
+		
+		if(!g_bAlwaysRandom[pPlayer])
 		{
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
+		}
+		else
+		{
+			RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
+			RandomWeapons(pPlayer, g_aArrays[Primary], g_iNumPrimary)
 		}
 	}
 	else if(g_iEquipMode == RANDOM_WEAPONS)
@@ -292,6 +301,7 @@ MenuShow_EquipMenu(const pPlayer) {
 	menu_additem(menu, fmt("%L", pPlayer, "PREVIOUS_SETUP"), .callback = callback)
 	menu_additem(menu, fmt("%L", pPlayer, "DONT_SHOW_MENU_AGAIN"), .callback = callback)
 	menu_additem(menu, fmt("%L", pPlayer, "RANDOM_SELECTION"), .callback = callback)
+	menu_additem(menu, fmt("%L", pPlayer, "ALWAYS_RANDOM"), .callback = callback)
 
 	if(g_iNumSecondary || g_iNumPrimary)
 		menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
@@ -337,6 +347,14 @@ public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
 			g_iPreviousSecondary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
 			g_iPreviousPrimary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Primary], g_iNumPrimary)
 		}
+		case em_always_random: {
+			g_iPreviousSecondary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
+			g_iPreviousPrimary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Primary], g_iNumPrimary)
+
+			client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_HELP_GUNS")
+			g_bOpenMenu[pPlayer] = false
+			g_bAlwaysRandom[pPlayer] = true
+		}		
 	}
 
 	return PLUGIN_HANDLED
