@@ -132,6 +132,14 @@ forward CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
 */
 forward CSDM_PlayerKilled(const pVictim, const pKiller, const HitBoxGroup:iLastHitGroup)
 
+/** Player reset score.
+*
+* @param pPlayer			Player id
+*
+* @note						return PLUGIN_HANDLED will block change
+*/
+forward CSDM_PlayerResetScore(const pPlayer)
+
 
 //■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ NATIVES ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 

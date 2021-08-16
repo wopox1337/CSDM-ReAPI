@@ -10,6 +10,7 @@ PRIMARY_WEAPONS = Primary weapon
 CHAT_HELP_GUNS = ^3say ^1guns ^3to re-enable the gun menu.
 MENU_WILL_BE_OPENED = ^3Gun menu will be re-enabled next spawn.
 FREEBUYTIME_PASSED = %0.f seconds have passed. ^rYou can't buy anything now!
+CHAT_RESETSCORE = Your score has been reset!
 
 [ru]
 EQUIP_MENU = Меню вооружения
@@ -23,3 +24,4 @@ PRIMARY_WEAPONS = Основное оружие
 CHAT_HELP_GUNS = ^3напишите ^1guns ^3, чтобы открыть меню оружия.
 MENU_WILL_BE_OPENED = ^3Меню вооружения будет открыто при следующем возрождении.
 FREEBUYTIME_PASSED = %0.f секунд прошло. ^rВы не можете больше покупать!
+CHAT_RESETSCORE = Ваш счёт был сброшен!
