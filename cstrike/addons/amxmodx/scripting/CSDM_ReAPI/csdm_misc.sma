@@ -19,8 +19,23 @@ new HamHook:g_hSecondaryAttack[sizeof(g_szWeaponList)], HamHook:g_hAddToPlayer[s
 
 new g_bWeaponState[MAX_CLIENTS + 1][CSW_P90 + 1]
 
-new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1
+new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1, bool:g_bAllowResetScore = true
 
+#define register_trigger_clcmd(%0,%1) \
+	for (new iter = 0; iter < sizeof(BASE_CHAT_TRIGGERS); iter++) \
+	{ \
+		register_clcmd(fmt("say %s%s", BASE_CHAT_TRIGGERS[iter], %0), %1); \
+		register_clcmd(fmt("say_team %s%s", BASE_CHAT_TRIGGERS[iter], %0), %1); \
+	}
+
+new stock const BASE_CHAT_TRIGGERS[][] = { "/", "\", "!", "." };
+
+enum forwardlist_e
+{
+	iFwdPlayerResetScore
+}
+
+new g_eCustomForwards[forwardlist_e]
 
 public plugin_init()
 {
@@ -31,6 +46,13 @@ public plugin_init()
 		DisableHamForward(g_hAddToPlayer[i] = RegisterHam(Ham_Item_AddToPlayer, g_szWeaponList[i], "CBasePlayerItem_AddToPlayer", .Post = true))
 		DisableHamForward(g_hSecondaryAttack[i] = RegisterHam(Ham_Weapon_SecondaryAttack, g_szWeaponList[i], "CBasePlayerItem_SecAttack", .Post = true))
 	}
+
+	new const CMDS_ResetScore[][] = { "rs", "resetscore" };
+	for(new i; i < sizeof(CMDS_ResetScore); i++) {
+		register_trigger_clcmd(CMDS_ResetScore[i], "hCMD_ResetScore")
+	}
+
+	g_eCustomForwards[iFwdPlayerResetScore] = CreateMultiForward("CSDM_PlayerResetScore", ET_IGNORE, FP_CELL)
 }
 
 public plugin_cfg()
@@ -132,6 +154,10 @@ public ReadCfg(const szLineData[], const iSectionID)
 		if(ContainFlag(szValue, "t"))
 			g_bitHideHudFlags |= HIDEHUD_TIMER
 	}
+	else if(equali(szKey, "allow_reset_score"))
+	{
+		g_bAllowResetScore = true;
+	}
 }
 
 CheckForwards()
@@ -164,4 +190,25 @@ CheckForwards()
 		unregister_message(iMsgIdHideWeapon, iMsgHookHideWeapon)
 		iMsgHookHideWeapon = 0
 	}
+}
+
+public hCMD_ResetScore(const pPlayer) {
+	if(!g_bAllowResetScore)
+		return PLUGIN_CONTINUE
+
+	if(is_nullent(pPlayer))
+		return PLUGIN_CONTINUE
+
+	new ret;
+	ExecuteForward(g_eCustomForwards[iFwdPlayerResetScore], ret, pPlayer)
+
+	if(ret == PLUGIN_HANDLED)
+		return PLUGIN_CONTINUE
+
+	set_entvar(pPlayer, var_frags, 0.0)
+	set_member(pPlayer, m_iDeaths, 0)
+
+	client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_RESETSCORE")
+
+	return PLUGIN_HANDLED
 }
