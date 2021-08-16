@@ -3,7 +3,7 @@
 #include <csdm>
 
 
-#define IsPlayer(%1)				(1 <= (%1) <= g_iMaxPlayers)
+#define IsPlayer(%1)				(1 <= (%1) <= MaxClients)
 
 const HideWeapon_Flags = 1 	// "HideWeapon" msg argument
 
@@ -18,7 +18,6 @@ new const g_szWeaponList[][] =
 new HamHook:g_hSecondaryAttack[sizeof(g_szWeaponList)], HamHook:g_hAddToPlayer[sizeof(g_szWeaponList)]
 
 new g_bWeaponState[MAX_CLIENTS + 1][CSW_P90 + 1]
-new g_iMaxPlayers
 
 new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1
 
@@ -32,8 +31,6 @@ public plugin_init()
 		DisableHamForward(g_hAddToPlayer[i] = RegisterHam(Ham_Item_AddToPlayer, g_szWeaponList[i], "CBasePlayerItem_AddToPlayer", .Post = true))
 		DisableHamForward(g_hSecondaryAttack[i] = RegisterHam(Ham_Weapon_SecondaryAttack, g_szWeaponList[i], "CBasePlayerItem_SecAttack", .Post = true))
 	}
-
-	g_iMaxPlayers = get_maxplayers()
 }
 
 public plugin_cfg()

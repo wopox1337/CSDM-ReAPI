@@ -3,7 +3,7 @@
 #include <fakemeta>
 
 
-#define IsPlayer(%1)				(1 <= %1 <= g_iMaxPlayers)
+#define IsPlayer(%1)				(1 <= %1 <= MaxClients)
 
 const Float:MIN_RESPAWN_TIME = 0.1
 const Float:MAX_RESPAWN_TIME = 15.0
@@ -31,7 +31,7 @@ enum forwardlist_e
 new HookChain:g_hTraceAttack
 new Array:g_aConfigData, Trie:g_tConfigSections, Trie:g_tConfigValues
 new g_eCustomForwards[forwardlist_e]
-new g_iIgnoreReturn, g_iMaxPlayers, g_iFwdEmitSound, g_iTotalItems
+new g_iIgnoreReturn, g_iFwdEmitSound, g_iTotalItems
 
 new Float:g_flRespawnDelay = MIN_RESPAWN_TIME, GameTypes:g_iGamemode
 new bool:g_bShowRespawnBar, bool:g_bFreeForAll, bool:g_bBlockGunpickupSound
@@ -90,7 +90,6 @@ public plugin_init()
 	set_msg_block(get_user_msgid("HudTextArgs"), BLOCK_SET)
 	set_msg_block(get_user_msgid("ClCorpse"), BLOCK_SET)
 
-	g_iMaxPlayers = get_maxplayers()
 	ExecuteForward(g_eCustomForwards[iFwdInitialized], g_iIgnoreReturn, CSDM_VERSION)
 }
 

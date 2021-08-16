@@ -6,7 +6,7 @@
 
 
 #define IsVectorZero(%1) 				(%1[X] == 0.0 && %1[Y] == 0.0 && %1[Z] == 0.0)
-#define IsPlayer(%1)					(1 <= %1 <= g_iMaxPlayers)
+#define IsPlayer(%1)					(1 <= %1 <= MaxClients)
 
 #define FIND_ENT_IN_SPHERE(%1,%2,%3) 	engfunc(EngFunc_FindEntityInSphere, %1, %2, %3)
 
@@ -50,7 +50,7 @@ new Float:g_vecLastOrigin[MAX_CLIENTS + 1][coord_e],
 new g_pAimedEntity[MAX_CLIENTS + 1], g_iLastSpawnIndex[MAX_CLIENTS + 1], bool:g_bFirstSpawn[MAX_CLIENTS + 1]
 new g_szSpawnDirectory[PLATFORM_MAX_PATH], g_szSpawnFile[PLATFORM_MAX_PATH + 32], g_szMapName[32]
 new g_iTotalPoints, g_iEditorMenuID, bool:g_bEditSpawns, bool:g_bNotSaved
-new g_iGravity, g_iMaxPlayers
+new g_iGravity
 
 public plugin_precache()
 {
@@ -65,8 +65,6 @@ public plugin_init()
 	register_menucmd((g_iEditorMenuID = register_menuid(g_szEditorMenuTitle)), MENU_KEY_BITS, "EditorMenuHandler")
 
 	DisableHookChain(g_hGetPlayerSpawnSpot = RegisterHookChain(RG_CSGameRules_GetPlayerSpawnSpot, "CSGameRules_GetPlayerSpawnSpot", .post = false))
-
-	g_iMaxPlayers = get_maxplayers()
 }
 
 public plugin_cfg()

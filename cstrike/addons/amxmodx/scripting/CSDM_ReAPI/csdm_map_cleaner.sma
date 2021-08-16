@@ -4,7 +4,7 @@
 #include <hamsandwich>
 
 
-#define IsPlayer(%1)			(1 <= %1 <= g_iMaxPlayers)
+#define IsPlayer(%1)			(1 <= %1 <= MaxClients)
 
 enum
 {
@@ -40,7 +40,7 @@ new const g_szMapEntityList[][] =
 	"player_weaponstrip"
 }
 
-new Trie:g_tMapEntitys, g_iFwdEntitySpawn, g_iMaxPlayers, g_iFwdSetModel
+new Trie:g_tMapEntitys, g_iFwdEntitySpawn, g_iFwdSetModel
 new g_bitRemoveObjects, bool:g_bRemoveWeapons, bool:g_bExcludeBomb
 new HamHook:g_hWeaponBoxSpawn, HamHook:g_hShieldSpawn
 
@@ -84,8 +84,6 @@ public plugin_init()
 
 	DisableHamForward(g_hWeaponBoxSpawn = RegisterHam(Ham_Spawn, "weaponbox", "CWeaponBox_Spawn", .Post = true))
 	DisableHamForward(g_hShieldSpawn = RegisterHam(Ham_Spawn, "weapon_shield", "CWShield_Spawn", .Post = true))
-
-	g_iMaxPlayers = get_maxplayers()
 }
 
 public plugin_cfg()
