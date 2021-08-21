@@ -270,7 +270,7 @@ public CBasePlayer_HasRestrictItem(const pPlayer, const ItemID:iItemId, const It
 	if(g_flFreeBuyTime > 0.0 && g_flPlayerBuyTime[pPlayer] < get_gametime())
 	{
 		client_print(pPlayer, print_center, "FREEBUYTIME_PASSED", g_flFreeBuyTime)
-		SetHookChainReturn(ATYPE_INTEGER, true)
+		SetHookChainReturn(ATYPE_BOOL, true)
 		return HC_SUPERCEDE
 	}
 
