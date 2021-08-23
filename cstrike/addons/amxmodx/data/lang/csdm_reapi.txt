@@ -40,7 +40,6 @@ MENU_WILL_BE_OPENED = ^3Menu de armas se volvera a habilitar la proxima generaci
 FREEBUYTIME_PASSED = Han pasado% 0.f segundos. ^rNo puedes comprar nada ahora!
 CHAT_RESETSCORE = Tu puntuacion se ha restablecido!
 
-
 [ru]
 EQUIP_MENU = Меню вооружения
 NEW_WEAPONS = Новое оружие
