@@ -1,0 +1,56 @@
+[bp]
+EQUIP_MENU = Menu de equipamentos
+NEW_WEAPONS = Novas armas
+PREVIOUS_SETUP = Configuracao anterior
+DONT_SHOW_MENU_AGAIN = 2 + Nao mostre menu novamente^n
+RANDOM_SELECTION = Selecao aleatoria
+ALWAYS_RANDOM = 4 + Nao mostre menu novamente
+SECONDARY_WEAPONS = Arma secundaria
+PRIMARY_WEAPONS = Arma primaria
+CHAT_HELP_GUNS = ^3diga ^1guns ^3para re-habilitar o menu da arma.
+MENU_WILL_BE_OPENED = ^3Gun menu sera reativado no proximo desova.
+FREEBUYTIME_PASSED = %0.f segundos passaram. ^rVoce nao pode comprar nada agora!
+CHAT_RESETSCORE = Sua pontuacao foi redefinida!
+
+[en]
+EQUIP_MENU = Equipment menu
+NEW_WEAPONS = New weapons
+PREVIOUS_SETUP = Previous setup
+DONT_SHOW_MENU_AGAIN = 2 + Don't show menu again^n
+RANDOM_SELECTION = Random selection
+ALWAYS_RANDOM = 4 + Don't show menu again
+SECONDARY_WEAPONS = Secondary weapon
+PRIMARY_WEAPONS = Primary weapon
+CHAT_HELP_GUNS = ^3say ^1guns ^3to re-enable the gun menu.
+MENU_WILL_BE_OPENED = ^3Gun menu will be re-enabled next spawn.
+FREEBUYTIME_PASSED = %0.f seconds have passed. ^rYou can't buy anything now!
+CHAT_RESETSCORE = Your score has been reset!
+
+[es]
+EQUIP_MENU = Menu de equipamiento
+NEW_WEAPONS = Nuevas armas
+PREVIOUS_SETUP = Configuracion anterior
+DONT_SHOW_MENU_AGAIN = 2 + No volver a mostrar el menu^n
+RANDOM_SELECTION = Seleccion aleatoria
+ALWAYS_RANDOM = 4 + No volver a mostrar el menu
+SECONDARY_WEAPONS = Arma secundaria
+PRIMARY_WEAPONS = Arma principal
+CHAT_HELP_GUNS = ^3diga ^1guns ^3para reactivar el menu de armas.
+MENU_WILL_BE_OPENED = ^3Menu de armas se volvera a habilitar la proxima generacion.
+FREEBUYTIME_PASSED = Han pasado% 0.f segundos. ^rNo puedes comprar nada ahora!
+CHAT_RESETSCORE = Tu puntuacion se ha restablecido!
+
+
+[ru]
+EQUIP_MENU = Меню вооружения
+NEW_WEAPONS = Новое оружие
+PREVIOUS_SETUP = Предыдущее оружие
+DONT_SHOW_MENU_AGAIN = 2 + Не показывать больше меню^n
+RANDOM_SELECTION = Случайный выбор
+ALWAYS_RANDOM = 4 + Не показывать больше меню
+SECONDARY_WEAPONS = Дополнительное оружие
+PRIMARY_WEAPONS = Основное оружие
+CHAT_HELP_GUNS = ^3напишите ^1guns ^3, чтобы открыть меню оружия.
+MENU_WILL_BE_OPENED = ^3Меню вооружения будет открыто при следующем возрождении.
+FREEBUYTIME_PASSED = %0.f секунд прошло. ^rВы не можете больше покупать!
+CHAT_RESETSCORE = Ваш счёт был сброшен!
