@@ -198,7 +198,6 @@ public ClCmd_EnableMenu(const pPlayer)
 
 	client_print_color(pPlayer, print_team_blue, "^4[CSDM] %L", pPlayer, "MENU_WILL_BE_OPENED")
 	g_bOpenMenu[pPlayer] = true
-	g_bAlwaysRandom[pPlayer] = false
 
 	return PLUGIN_HANDLED
 }
@@ -331,10 +330,12 @@ public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
 	switch(item) {
 		case em_newWeapons: {
 			g_iNumSecondary ? MenuShow_SecondaryWeapons(pPlayer) : MenuShow_PrimaryWeapons(pPlayer)
+			g_bAlwaysRandom[pPlayer] = false
 		}
 		case em_previous: {
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
+			g_bAlwaysRandom[pPlayer] = false
 		}
 		case em_dontShowAgain: {
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
@@ -342,10 +343,12 @@ public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
 
 			client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_HELP_GUNS")
 			g_bOpenMenu[pPlayer] = false
+			g_bAlwaysRandom[pPlayer] = false
 		}
 		case em_random: {
 			g_iPreviousSecondary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
 			g_iPreviousPrimary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Primary], g_iNumPrimary)
+			g_bAlwaysRandom[pPlayer] = false
 		}
 		case em_always_random: {
 			g_iPreviousSecondary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
