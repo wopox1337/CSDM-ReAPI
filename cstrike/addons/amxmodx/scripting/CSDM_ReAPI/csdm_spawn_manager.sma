@@ -250,7 +250,7 @@ public ShowEditorMenu(const pPlayer)
 	}
 
 	iLen += formatex(szMenu[iLen], charsmax(szMenu) - iLen,
-		"\y5. \wReflesh info^n\
+		"\y5. \wRefresh info^n\
 		\y6. \wGravity \y%0.2f^n^n\
 		%s^n", g_flGravityValues[g_iGravity],
 		g_bNotSaved ? "\y8. \wSave manual" : "\d8. Save manual"
