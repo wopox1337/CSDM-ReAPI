@@ -1,7 +1,7 @@
 #include <amxmodx>
 #include <hamsandwich>
 #include <csdm>
-
+#include <reapi>
 
 #define IsPlayer(%1)				(1 <= (%1) <= MaxClients)
 
@@ -20,6 +20,9 @@ new HamHook:g_hSecondaryAttack[sizeof(g_szWeaponList)], HamHook:g_hAddToPlayer[s
 new g_bWeaponState[MAX_CLIENTS + 1][CSW_P90 + 1]
 
 new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1, bool:g_bAllowResetScore = true
+
+new bool: csdm_spec_menu_always = true
+new bool: csdm_unlimited_team_changes = true
 
 #define register_trigger_clcmd(%0,%1) \
 	for (new iter = 0; iter < sizeof(BASE_CHAT_TRIGGERS); iter++) \
@@ -46,6 +49,10 @@ public plugin_init()
 		DisableHamForward(g_hAddToPlayer[i] = RegisterHam(Ham_Item_AddToPlayer, g_szWeaponList[i], "CBasePlayerItem_AddToPlayer", .Post = true))
 		DisableHamForward(g_hSecondaryAttack[i] = RegisterHam(Ham_Weapon_SecondaryAttack, g_szWeaponList[i], "CBasePlayerItem_SecAttack", .Post = true))
 	}
+
+	RegisterHookChain(RG_HandleMenu_ChooseTeam, "HandleMenu_ChooseTeam_Pre", .post = false)
+	RegisterHookChain(RG_HandleMenu_ChooseTeam, "HandleMenu_ChooseTeam", .post = true)
+	RegisterHookChain(RG_ShowVGUIMenu, "ShowVGUIMenu_Pre", .post = false)
 
 	new const CMDS_ResetScore[][] = { "rs", "resetscore" };
 	for(new i; i < sizeof(CMDS_ResetScore); i++) {
@@ -118,6 +125,30 @@ public CBasePlayerItem_AddToPlayer(const pWeapon, const pPlayer)
 	}
 
 	return HAM_IGNORED
+}
+
+public HandleMenu_ChooseTeam_Pre(const index, const MenuChooseTeam:slot)
+{
+	if(csdm_spec_menu_always)
+		set_member_game(m_bFreezePeriod, true)
+}
+
+public HandleMenu_ChooseTeam(const index, const MenuChooseTeam:slot)
+{
+	if(csdm_spec_menu_always)
+		set_member_game(m_bFreezePeriod, false)
+
+	if(csdm_unlimited_team_changes)
+		set_member(index, m_bTeamChanged, false)
+}
+
+public ShowVGUIMenu_Pre(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[])
+{
+	if(csdm_spec_menu_always && strcmp(szOldMenu, "#IG_Team_Select") == 0)
+	{
+		SetHookChainArg(3, ATYPE_INTEGER, (bitsSlots | MENU_KEY_6))
+		SetHookChainArg(4, ATYPE_STRING, "#IG_Team_Select_Spect")
+	}
 }
 
 public Message_HideWeapon(const iMsgId, const iMsgDest, const iMsgEntity)
