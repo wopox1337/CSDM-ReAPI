@@ -345,7 +345,7 @@ bool:AddSpawn(const pPlayer, bool:bUndo = false)
 		SetPosition(pEntity, vecOrigin, vecAngles, vecVAngles)
 	}
 
-	min(g_iTotalPoints++, MAX_SPAWNS)
+	g_iTotalPoints = min(MAX_SPAWNS, ++g_iTotalPoints)
 
 	return true
 }
@@ -374,7 +374,8 @@ bool:DeleteSpawn(const pPlayer, const pEntity = NULLENT)
 
 	g_pAimedEntity[pPlayer] = NULLENT
 	REMOVE_ENTITY(pEntity)
-	max(0, g_iTotalPoints--)
+
+	g_iTotalPoints = max(0, --g_iTotalPoints)
 
 	return true
 }
