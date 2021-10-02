@@ -60,6 +60,9 @@ public plugin_init()
 	}
 
 	g_eCustomForwards[iFwdPlayerResetScore] = CreateMultiForward("CSDM_PlayerResetScore", ET_IGNORE, FP_CELL)
+
+	bind_pcvar_num(create_cvar("csdm_spec_menu_always", "1"), csdm_spec_menu_always)
+	bind_pcvar_num(create_cvar("csdm_unlimited_team_changes", "1"), csdm_unlimited_team_changes)
 }
 
 public plugin_cfg()
