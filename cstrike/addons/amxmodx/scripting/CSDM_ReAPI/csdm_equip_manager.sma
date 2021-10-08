@@ -331,11 +331,13 @@ public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
 		case em_newWeapons: {
 			g_iNumSecondary ? MenuShow_SecondaryWeapons(pPlayer) : MenuShow_PrimaryWeapons(pPlayer)
 			g_bAlwaysRandom[pPlayer] = false
+			g_bOpenMenu[pPlayer] = true
 		}
 		case em_previous: {
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
 			PreviousWeapons(pPlayer, g_aArrays[Primary], g_iPreviousPrimary[pPlayer])
 			g_bAlwaysRandom[pPlayer] = false
+			g_bOpenMenu[pPlayer] = true
 		}
 		case em_dontShowAgain: {
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
@@ -349,6 +351,7 @@ public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
 			g_iPreviousSecondary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
 			g_iPreviousPrimary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Primary], g_iNumPrimary)
 			g_bAlwaysRandom[pPlayer] = false
+			g_bOpenMenu[pPlayer] = true
 		}
 		case em_always_random: {
 			g_iPreviousSecondary[pPlayer] = RandomWeapons(pPlayer, g_aArrays[Secondary], g_iNumSecondary)
