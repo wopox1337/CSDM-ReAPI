@@ -152,8 +152,7 @@ public HandleMenu_ChooseTeam(const index, const MenuChooseTeam:slot)
 
 public ShowVGUIMenu_Pre(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[])
 {
-	if(csdm_spec_menu_always && strcmp(szOldMenu, "#IG_Team_Select") == 0)
-	{
+	if(csdm_spec_menu_always && menuType == VGUI_Menu_Team) {
 		SetHookChainArg(3, ATYPE_INTEGER, (bitsSlots | MENU_KEY_6))
 		SetHookChainArg(4, ATYPE_STRING, "#IG_Team_Select_Spect")
 	}
