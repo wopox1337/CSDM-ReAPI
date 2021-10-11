@@ -132,6 +132,8 @@ public CBasePlayerItem_AddToPlayer(const pWeapon, const pPlayer)
 
 public HandleMenu_ChooseTeam_Pre(const index, const MenuChooseTeam:slot)
 {
+	set_member(index, m_bForceShowMenu, true)
+
 	if(csdm_spec_menu_always)
 		set_member_game(m_bFreezePeriod, true)
 }
