@@ -21,8 +21,8 @@ new g_bWeaponState[MAX_CLIENTS + 1][CSW_P90 + 1]
 
 new bool:g_bWeaponStateRemember = true, g_bitHideHudFlags, g_iRefillClip = 1, bool:g_bAllowResetScore = true
 
-new bool: csdm_spec_menu_always = true
-new bool: csdm_unlimited_team_changes = true
+new bool: csdm_spec_menu_always
+new bool: csdm_unlimited_team_changes
 
 #define register_trigger_clcmd(%0,%1) \
 	for (new iter = 0; iter < sizeof(BASE_CHAT_TRIGGERS); iter++) \
@@ -60,9 +60,6 @@ public plugin_init()
 	}
 
 	g_eCustomForwards[iFwdPlayerResetScore] = CreateMultiForward("CSDM_PlayerResetScore", ET_IGNORE, FP_CELL)
-
-	bind_pcvar_num(create_cvar("csdm_spec_menu_always", "1"), csdm_spec_menu_always)
-	bind_pcvar_num(create_cvar("csdm_unlimited_team_changes", "1"), csdm_unlimited_team_changes)
 }
 
 public plugin_cfg()
@@ -194,7 +191,15 @@ public ReadCfg(const szLineData[], const iSectionID)
 	}
 	else if(equali(szKey, "allow_reset_score"))
 	{
-		g_bAllowResetScore = true;
+		g_bAllowResetScore = true
+	}
+	else if(equali(szKey, "spec_menu_always"))
+	{
+		csdm_spec_menu_always = true
+	}
+	else if(equali(szKey, "unlimited_team_changes"))
+	{
+		csdm_unlimited_team_changes = true
 	}
 }
 
