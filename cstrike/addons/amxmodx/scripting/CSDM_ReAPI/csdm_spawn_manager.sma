@@ -15,7 +15,7 @@ const Float:MIN_SPAWN_RADIUS = 450.0 		// beta
 
 // spawn editor options
 const MAX_SEARCH_DISTANCE = 2500
-const Float:ADD_Z_POSITION = 15.0
+const Float:ADD_Z_POSITION = 0.0
 
 new const Float:g_flGravityValues[] = {1.0, 0.5, 0.25, 0.15, 0.05}
 
@@ -575,6 +575,9 @@ GetPosition(const pEntity, Float:vecOrigin[coord_e], Float:vecAngles[coord_e], F
 	get_entvar(pEntity, var_origin, vecOrigin)
 	get_entvar(pEntity, var_angles, vecAngles)
 	get_entvar(pEntity, var_v_angle, vecVAngles)
+
+	if(get_entvar(pEntity, var_flags) & FL_DUCKING)
+		vecOrigin[2] += 18.0
 }
 
 bool:SetAimedEntity(const pPlayer, pEntity = NULLENT, bool:bPrint = true)
