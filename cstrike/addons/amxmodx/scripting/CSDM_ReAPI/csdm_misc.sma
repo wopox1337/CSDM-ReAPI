@@ -145,6 +145,9 @@ public HandleMenu_ChooseTeam(const index, const MenuChooseTeam:slot)
 
 	if(csdm_unlimited_team_changes)
 		set_member(index, m_bTeamChanged, false)
+
+	if(get_member(index, m_iTeam) != TEAM_SPECTATOR)
+		rg_internal_cmd(index, "joinclass", "5")
 }
 
 public ShowVGUIMenu_Pre(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[])
