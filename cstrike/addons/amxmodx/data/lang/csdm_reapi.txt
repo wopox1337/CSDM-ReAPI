@@ -53,3 +53,17 @@ CHAT_HELP_GUNS = ^3напишите ^1guns ^3, чтобы открыть мен�
 MENU_WILL_BE_OPENED = ^3Меню вооружения будет открыто при следующем возрождении.
 FREEBUYTIME_PASSED = %0.f секунд прошло. ^rВы не можете больше покупать!
 CHAT_RESETSCORE = Ваш счёт был сброшен!
+
+[bg]
+EQUIP_MENU = Menu Oborudvane
+NEW_WEAPONS = Novi orajiya
+PREVIOUS_SETUP = Predishni orajiya
+DONT_SHOW_MENU_AGAIN = 2 + Ne pokazvai menuto pak^n
+RANDOM_SELECTION = Sluchaen izbor
+ALWAYS_RANDOM = 4 + Ne pokazvai menuto pak
+SECONDARY_WEAPONS = Vtorichno orajie
+PRIMARY_WEAPONS = Osnovno orajie
+CHAT_HELP_GUNS = ^3napishete ^1guns ^3za da aktivirate otnovo menuto s orajiya.
+MENU_WILL_BE_OPENED = ^3Menuto shte bade aktivno pri sledvashtoto prerajdane.
+FREEBUYTIME_PASSED = %0.f sekundi minaha. ^rSega ne mojete da kupuvate!
+CHAT_RESETSCORE = Rezultatat vi be zanulen!
