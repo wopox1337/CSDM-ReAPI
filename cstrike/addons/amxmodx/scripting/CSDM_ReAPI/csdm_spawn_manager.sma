@@ -175,7 +175,7 @@ RandomSpawn(const pPlayer)
 	if(!g_iTotalPoints || g_bFirstSpawn[pPlayer])
 		return false
 
-	new iRand = random(g_iTotalPoints), iAttempts, iLast = g_iLastSpawnIndex[pPlayer]
+	new iRand = random(g_iTotalPoints - 1), iAttempts, iLast = g_iLastSpawnIndex[pPlayer]
 	do
 	{
 		iAttempts++
@@ -188,8 +188,8 @@ RandomSpawn(const pPlayer)
 			return true
 		}
 
-		if(iRand++ > g_iTotalPoints) {
-			iRand = random(g_iTotalPoints)
+		if(iRand++ >= g_iTotalPoints) {
+			iRand = random(g_iTotalPoints - 1)
 		}
 
 	} while(iAttempts <= g_iTotalPoints)
