@@ -188,7 +188,7 @@ RandomSpawn(const pPlayer)
 			return true
 		}
 
-		if(iRand++ >= g_iTotalPoints) {
+		if(++iRand >= g_iTotalPoints) {
 			iRand = random(g_iTotalPoints - 1)
 		}
 
