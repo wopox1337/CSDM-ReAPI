@@ -17,8 +17,8 @@
     <a href="https://www.amxmodx.org/downloads-new.php">
     <img src="https://img.shields.io/badge/AMXModX-%3E%3D1.9.0-blue?style=flat-square"
          alt="AMXModX dependency">
-    <a href="https://gitter.im/CSDM-ReAPI/Development?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
-    <img src="https://img.shields.io/badge/discussions-on%20gitter-informational?style=flat-square&logo=googlechat"
+    <a href="https://t.me/CSDM_ReAPI">
+    <img src="https://img.shields.io/badge/discussions-on%20Telegram-informational?style=flat-square&logo=googlechat"
          alt="Gitter">
 </p>
       
@@ -80,6 +80,7 @@ Reach out to me at one of the following places:
 - Github issues;
 - Github discussions;
 - [Telegram](https://t.me/ShorokhovSergey);
+- [Telegram group](https://t.me/CSDM_ReAPI);
 - E-Mail;
 
 ## License
