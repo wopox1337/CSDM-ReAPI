@@ -577,7 +577,7 @@ GetPosition(const pEntity, Float:vecOrigin[coord_e], Float:vecAngles[coord_e], F
 	get_entvar(pEntity, var_v_angle, vecVAngles)
 
 	if(get_entvar(pEntity, var_flags) & FL_DUCKING)
-		vecOrigin[2] += 18.0
+		vecOrigin[Z] += 18.0
 }
 
 bool:SetAimedEntity(const pPlayer, pEntity = NULLENT, bool:bPrint = true)
