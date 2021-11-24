@@ -46,7 +46,7 @@ new Float:g_vecLastOrigin[MAX_CLIENTS + 1][coord_e],
 	Float:g_vecLastAngles[MAX_CLIENTS + 1][coord_e],
 	Float:g_vecLastVAngles[MAX_CLIENTS + 1][coord_e]
 
-new g_pAimedEntity[MAX_CLIENTS + 1], g_iLastSpawnIndex[MAX_CLIENTS + 1], bool:g_bFirstSpawn[MAX_CLIENTS + 1]
+new g_pAimedEntity[MAX_CLIENTS + 1], g_iLastSpawnIndex[MAX_CLIENTS + 1] = { -1, ... }, bool:g_bFirstSpawn[MAX_CLIENTS + 1]
 new g_szSpawnDirectory[PLATFORM_MAX_PATH], g_szSpawnFile[PLATFORM_MAX_PATH + 32], g_szMapName[32]
 new g_iTotalPoints, g_iEditorMenuID, bool:g_bEditSpawns, bool:g_bNotSaved
 new g_iGravity
