@@ -59,7 +59,7 @@ enum EquipMenu_s
 
 new HookChain:g_hGiveDefaultItems, HookChain:g_hBuyWeaponByWeaponID, HookChain:g_hHasRestrictItem
 new Array:g_aArrays[arraylist_e], Trie:g_tCheckItemName
-new g_iPreviousSecondary[MAX_CLIENTS + 1], g_iPreviousPrimary[MAX_CLIENTS + 1], bool:g_bOpenMenu[MAX_CLIENTS + 1], bool:g_bAlwaysRandom[MAX_CLIENTS + 1]
+new g_iPreviousSecondary[MAX_CLIENTS + 1] = { 2, ... }, g_iPreviousPrimary[MAX_CLIENTS + 1] = { 1, ... }, bool:g_bOpenMenu[MAX_CLIENTS + 1], bool:g_bAlwaysRandom[MAX_CLIENTS + 1]
 new Float:g_flPlayerBuyTime[MAX_CLIENTS + 1]
 
 new g_iSecondarySection, g_iPrimarySection, g_iBotSecondarySection, g_iBotPrimarySection
@@ -180,8 +180,9 @@ public CSDM_RestartRound(const bool:bNewGame)
 
 public client_putinserver(pPlayer)
 {
-	g_iPreviousSecondary[pPlayer] = g_iPreviousPrimary[pPlayer] = INVALID_INDEX
-	g_bOpenMenu[pPlayer] = true
+	g_iPreviousSecondary[pPlayer] = 2
+	g_iPreviousPrimary[pPlayer] = 1
+	g_bOpenMenu[pPlayer] = false
 	g_bAlwaysRandom[pPlayer] = false
 	g_flPlayerBuyTime[pPlayer] = 0.0
 }
@@ -236,7 +237,7 @@ public CSDM_PlayerSpawned(const pPlayer, const bool:bIsBot, const iNumSpawns)
 		{
 			MenuShow_EquipMenu(pPlayer)
 		}
-		
+
 		if(!g_bAlwaysRandom[pPlayer])
 		{
 			PreviousWeapons(pPlayer, g_aArrays[Secondary], g_iPreviousSecondary[pPlayer])
@@ -360,7 +361,7 @@ public MenuHandler_EquipMenu(const pPlayer, const menu, const item) {
 			client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_HELP_GUNS")
 			g_bOpenMenu[pPlayer] = false
 			g_bAlwaysRandom[pPlayer] = true
-		}		
+		}
 	}
 
 	return PLUGIN_HANDLED
