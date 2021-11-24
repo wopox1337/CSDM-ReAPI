@@ -181,15 +181,18 @@ RandomSpawn(const pPlayer)
 			if(CheckSpawn(pPlayer, iSpawnIdx, iAttempt)) {
 				iBestSpawnIdx = iSpawnIdx
 				break
-			}
+			} else if(iAttempt == 2)
+				break
 		}
 
 		if(iSpawnIdx == (g_iTotalPoints - 1))
 			iSpawnIdx = random(g_iTotalPoints - 1)
 	}
 
-	if(iBestSpawnIdx == -1)
+	if(iBestSpawnIdx == -1) {
+		g_iLastSpawnIndex[pPlayer] = -1
 		return false
+	}
 
 	SetPlayerPosition(pPlayer, g_vecSpotOrigin[iBestSpawnIdx], g_vecSpotVAngles[iBestSpawnIdx])
 	g_iLastSpawnIndex[pPlayer] = iBestSpawnIdx
@@ -207,10 +210,10 @@ bool:CheckSpawn(const pPlayer, const iSpawnIdx, const iAttempt) {
 	if((iAttempt < 2) && g_iLastSpawnIndex[pPlayer] == iSpawnIdx)
 		return false
 
-	if(CheckDistance(pPlayer, g_vecSpotOrigin[iSpawnIdx], 100.0))
+	if((iAttempt == 1) && CheckDistance(pPlayer, g_vecSpotOrigin[iSpawnIdx], 100.0))
 		return false
 
-	if(iAttempt >= 2) // not found, use default spawn
+	if(iAttempt == 2) // not found, use default spawn
 		return false
 
 	return true
