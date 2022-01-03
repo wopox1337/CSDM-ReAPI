@@ -59,7 +59,7 @@ enum EquipMenu_s
 
 new HookChain:g_hGiveDefaultItems, HookChain:g_hBuyWeaponByWeaponID, HookChain:g_hHasRestrictItem
 new Array:g_aArrays[arraylist_e], Trie:g_tCheckItemName
-new g_iPreviousSecondary[MAX_CLIENTS + 1] = { 2, ... }, g_iPreviousPrimary[MAX_CLIENTS + 1] = { 1, ... }, bool:g_bOpenMenu[MAX_CLIENTS + 1], bool:g_bAlwaysRandom[MAX_CLIENTS + 1]
+new g_iPreviousSecondary[MAX_CLIENTS + 1] = {INVALID_INDEX, ...}, g_iPreviousPrimary[MAX_CLIENTS + 1] = {INVALID_INDEX, ...}, bool:g_bOpenMenu[MAX_CLIENTS + 1], bool:g_bAlwaysRandom[MAX_CLIENTS + 1]
 new Float:g_flPlayerBuyTime[MAX_CLIENTS + 1]
 
 new g_iSecondarySection, g_iPrimarySection, g_iBotSecondarySection, g_iBotPrimarySection
@@ -69,6 +69,8 @@ new EquipTypes:g_iEquipMode = EQUIP_MENU, bool:g_bBlockDefaultItems = true
 new bool:g_bAlwaysOpenMenu, Float:g_flFreeBuyTime, g_iFreeBuyMoney
 new bool:g_bHasMapParameters, mp_maxmoney
 
+new g_szStartingPrimary[20] = "weapon_ak47", g_szStartingSecondary[20] = "weapon_deagle"
+new g_iStartingPrimary = INVALID_INDEX, g_iStartingSecondary = INVALID_INDEX
 
 public plugin_init()
 {
@@ -97,6 +99,26 @@ public CSDM_Initialized(const szVersion[])
 
 public plugin_cfg()
 {
+	new eWeaponData[equip_data_s]
+
+	for(new i = 0; i < g_iNumPrimary; i++) {
+		ArrayGetArray(g_aArrays[Primary], i, eWeaponData)
+
+		if(equal(g_szStartingPrimary, eWeaponData[szWeaponName])) {
+			g_iStartingPrimary = i
+			break
+		}
+	}
+
+	for(new i = 0; i < g_iNumSecondary; i++) {
+		ArrayGetArray(g_aArrays[Secondary], i, eWeaponData)
+
+		if(equal(g_szStartingSecondary, eWeaponData[szWeaponName])) {
+			g_iStartingSecondary = i
+			break
+		}
+	}
+
 	CheckForwards()
 }
 
@@ -180,8 +202,8 @@ public CSDM_RestartRound(const bool:bNewGame)
 
 public client_putinserver(pPlayer)
 {
-	g_iPreviousSecondary[pPlayer] = 2
-	g_iPreviousPrimary[pPlayer] = 1
+	g_iPreviousSecondary[pPlayer] = g_iStartingSecondary
+	g_iPreviousPrimary[pPlayer] = g_iStartingPrimary
 	g_bOpenMenu[pPlayer] = false
 	g_bAlwaysRandom[pPlayer] = false
 	g_flPlayerBuyTime[pPlayer] = 0.0
