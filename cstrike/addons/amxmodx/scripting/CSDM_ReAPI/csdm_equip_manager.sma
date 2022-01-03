@@ -69,8 +69,8 @@ new EquipTypes:g_iEquipMode = EQUIP_MENU, bool:g_bBlockDefaultItems = true
 new bool:g_bAlwaysOpenMenu, Float:g_flFreeBuyTime, g_iFreeBuyMoney
 new bool:g_bHasMapParameters, mp_maxmoney
 
-new g_szStartingPrimary[20] = "weapon_ak47", g_szStartingSecondary[20] = "weapon_deagle"
-new g_iStartingPrimary = INVALID_INDEX, g_iStartingSecondary = INVALID_INDEX
+new g_szStarterPrimary[20], g_szStarterSecondary[20]
+new g_iStarterPrimary = INVALID_INDEX, g_iStarterSecondary = INVALID_INDEX
 
 public plugin_init()
 {
@@ -104,8 +104,8 @@ public plugin_cfg()
 	for(new i = 0; i < g_iNumPrimary; i++) {
 		ArrayGetArray(g_aArrays[Primary], i, eWeaponData)
 
-		if(equal(g_szStartingPrimary, eWeaponData[szWeaponName])) {
-			g_iStartingPrimary = i
+		if(equal(g_szStarterPrimary, eWeaponData[szWeaponName])) {
+			g_iStarterPrimary = i
 			break
 		}
 	}
@@ -113,8 +113,8 @@ public plugin_cfg()
 	for(new i = 0; i < g_iNumSecondary; i++) {
 		ArrayGetArray(g_aArrays[Secondary], i, eWeaponData)
 
-		if(equal(g_szStartingSecondary, eWeaponData[szWeaponName])) {
-			g_iStartingSecondary = i
+		if(equal(g_szStarterSecondary, eWeaponData[szWeaponName])) {
+			g_iStarterSecondary = i
 			break
 		}
 	}
@@ -202,8 +202,8 @@ public CSDM_RestartRound(const bool:bNewGame)
 
 public client_putinserver(pPlayer)
 {
-	g_iPreviousSecondary[pPlayer] = g_iStartingSecondary
-	g_iPreviousPrimary[pPlayer] = g_iStartingPrimary
+	g_iPreviousSecondary[pPlayer] = g_iStarterSecondary
+	g_iPreviousPrimary[pPlayer] = g_iStarterPrimary
 	g_bOpenMenu[pPlayer] = false
 	g_bAlwaysRandom[pPlayer] = false
 	g_flPlayerBuyTime[pPlayer] = 0.0
