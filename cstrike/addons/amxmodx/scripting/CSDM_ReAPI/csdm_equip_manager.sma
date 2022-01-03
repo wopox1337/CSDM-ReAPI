@@ -59,7 +59,7 @@ enum EquipMenu_s
 
 new HookChain:g_hGiveDefaultItems, HookChain:g_hBuyWeaponByWeaponID, HookChain:g_hHasRestrictItem
 new Array:g_aArrays[arraylist_e], Trie:g_tCheckItemName
-new g_iPreviousSecondary[MAX_CLIENTS + 1] = { 2, ... }, g_iPreviousPrimary[MAX_CLIENTS + 1] = { 1, ... }, bool:g_bOpenMenu[MAX_CLIENTS + 1], bool:g_bAlwaysRandom[MAX_CLIENTS + 1]
+new g_iPreviousSecondary[MAX_CLIENTS + 1] = {INVALID_INDEX, ...}, g_iPreviousPrimary[MAX_CLIENTS + 1] = {INVALID_INDEX, ...}, bool:g_bOpenMenu[MAX_CLIENTS + 1], bool:g_bAlwaysRandom[MAX_CLIENTS + 1]
 new Float:g_flPlayerBuyTime[MAX_CLIENTS + 1]
 
 new g_iSecondarySection, g_iPrimarySection, g_iBotSecondarySection, g_iBotPrimarySection
@@ -69,6 +69,8 @@ new EquipTypes:g_iEquipMode = EQUIP_MENU, bool:g_bBlockDefaultItems = true
 new bool:g_bAlwaysOpenMenu, Float:g_flFreeBuyTime, g_iFreeBuyMoney
 new bool:g_bHasMapParameters, mp_maxmoney
 
+new g_szStarterPrimary[20], g_szStarterSecondary[20]
+new g_iStarterPrimary = INVALID_INDEX, g_iStarterSecondary = INVALID_INDEX
 
 public plugin_init()
 {
@@ -97,6 +99,26 @@ public CSDM_Initialized(const szVersion[])
 
 public plugin_cfg()
 {
+	new eWeaponData[equip_data_s]
+
+	for(new i = 0; i < g_iNumPrimary; i++) {
+		ArrayGetArray(g_aArrays[Primary], i, eWeaponData)
+
+		if(equal(g_szStarterPrimary, eWeaponData[szWeaponName])) {
+			g_iStarterPrimary = i
+			break
+		}
+	}
+
+	for(new i = 0; i < g_iNumSecondary; i++) {
+		ArrayGetArray(g_aArrays[Secondary], i, eWeaponData)
+
+		if(equal(g_szStarterSecondary, eWeaponData[szWeaponName])) {
+			g_iStarterSecondary = i
+			break
+		}
+	}
+
 	CheckForwards()
 }
 
@@ -180,8 +202,8 @@ public CSDM_RestartRound(const bool:bNewGame)
 
 public client_putinserver(pPlayer)
 {
-	g_iPreviousSecondary[pPlayer] = 2
-	g_iPreviousPrimary[pPlayer] = 1
+	g_iPreviousSecondary[pPlayer] = g_iStarterSecondary
+	g_iPreviousPrimary[pPlayer] = g_iStarterPrimary
 	g_bOpenMenu[pPlayer] = false
 	g_bAlwaysRandom[pPlayer] = false
 	g_flPlayerBuyTime[pPlayer] = 0.0
@@ -452,6 +474,14 @@ public ReadCfg_Settings(const szLineData[], const iSectionID)
 		else if(equali(szKey, "block_default_items"))
 		{
 			g_bBlockDefaultItems = bool:(str_to_num(szValue))
+		}
+		else if(equali(szKey, "starter_primary"))
+		{
+			copy(g_szStarterPrimary, charsmax(g_szStarterPrimary), szValue)
+		}
+		else if(equali(szKey, "starter_secondary"))
+		{
+			copy(g_szStarterSecondary, charsmax(g_szStarterSecondary), szValue)
 		}
 	}
 }
