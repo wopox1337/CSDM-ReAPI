@@ -475,6 +475,14 @@ public ReadCfg_Settings(const szLineData[], const iSectionID)
 		{
 			g_bBlockDefaultItems = bool:(str_to_num(szValue))
 		}
+		else if(equali(szKey, "starter_primary"))
+		{
+			copy(g_szStarterPrimary, charsmax(g_szStarterPrimary), szValue)
+		}
+		else if(equali(szKey, "starter_secondary"))
+		{
+			copy(g_szStarterSecondary, charsmax(g_szStarterSecondary), szValue)
+		}
 	}
 }
 
