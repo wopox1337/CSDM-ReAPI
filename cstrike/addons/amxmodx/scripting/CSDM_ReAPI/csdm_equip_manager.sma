@@ -325,10 +325,13 @@ MenuShow_EquipMenu(const pPlayer) {
 	menu_additem(menu, fmt("%L", pPlayer, "RANDOM_SELECTION"), .callback = callback)
 	menu_additem(menu, fmt("%L", pPlayer, "ALWAYS_RANDOM"), .callback = callback)
 
+	menu_setprop(menu, MPROP_BACKNAME, fmt("%L", pPlayer, "BACK"))
+	menu_setprop(menu, MPROP_NEXTNAME, fmt("%L", pPlayer, "MORE"))
+	menu_setprop(menu, MPROP_EXITNAME, fmt("%L", pPlayer, "EXIT"))
+	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
+
 	if(g_iNumSecondary || g_iNumPrimary)
 		menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
-
-	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
 
 	menu_display(pPlayer, menu)
 	return PLUGIN_HANDLED
@@ -397,8 +400,11 @@ MenuShow_PrimaryWeapons(const pPlayer) {
 
 	AddItemsToMenu(menu, g_aArrays[Primary], g_iNumPrimary)
 
-	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
+	menu_setprop(menu, MPROP_BACKNAME, fmt("%L", pPlayer, "BACK"))
+	menu_setprop(menu, MPROP_NEXTNAME, fmt("%L", pPlayer, "MORE"))
+	menu_setprop(menu, MPROP_EXITNAME, fmt("%L", pPlayer, "EXIT"))
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
+	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
 
 	menu_display(pPlayer, menu)
 }
@@ -426,8 +432,11 @@ MenuShow_SecondaryWeapons(const pPlayer) {
 
 	AddItemsToMenu(menu, g_aArrays[Secondary], g_iNumSecondary)
 
-	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
+	menu_setprop(menu, MPROP_BACKNAME, fmt("%L", pPlayer, "BACK"))
+	menu_setprop(menu, MPROP_NEXTNAME, fmt("%L", pPlayer, "MORE"))
+	menu_setprop(menu, MPROP_EXITNAME, fmt("%L", pPlayer, "EXIT"))
 	menu_setprop(menu, MPROP_NUMBER_COLOR, "\y")
+	menu_setprop(menu, MPROP_EXIT, MEXIT_NEVER)
 
 	menu_display(pPlayer, menu)
 }
