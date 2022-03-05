@@ -11,6 +11,7 @@
 #define FIND_ENT_IN_SPHERE(%1,%2,%3) 	engfunc(EngFunc_FindEntityInSphere, %1, %2, %3)
 
 const MAX_SPAWNS = 64
+const Float:MIN_SPAWN_RADIUS = 450.0 		// beta
 
 // spawn editor options
 const MAX_SEARCH_DISTANCE = 2500
@@ -46,7 +47,7 @@ new Float:g_vecLastOrigin[MAX_CLIENTS + 1][coord_e],
 	Float:g_vecLastAngles[MAX_CLIENTS + 1][coord_e],
 	Float:g_vecLastVAngles[MAX_CLIENTS + 1][coord_e]
 
-new g_pAimedEntity[MAX_CLIENTS + 1], g_iLastSpawnIndex[MAX_CLIENTS + 1] = { -1, ... }, bool:g_bFirstSpawn[MAX_CLIENTS + 1]
+new g_pAimedEntity[MAX_CLIENTS + 1], g_iLastSpawnIndex[MAX_CLIENTS + 1], bool:g_bFirstSpawn[MAX_CLIENTS + 1]
 new g_szSpawnDirectory[PLATFORM_MAX_PATH], g_szSpawnFile[PLATFORM_MAX_PATH + 32], g_szMapName[32]
 new g_iTotalPoints, g_iEditorMenuID, bool:g_bEditSpawns, bool:g_bNotSaved
 new g_iGravity
@@ -174,55 +175,32 @@ RandomSpawn(const pPlayer)
 	if(!g_iTotalPoints || g_bFirstSpawn[pPlayer])
 		return false
 
-	new iBestSpawnIdx = -1
-	for(new iAttempt; iAttempt <= 2 && iBestSpawnIdx == -1; iAttempt++) {
-		new iSpawnIdx
-		for( ;iSpawnIdx < g_iTotalPoints; iSpawnIdx++) {
-			if(CheckSpawn(pPlayer, iSpawnIdx, iAttempt)) {
-				iBestSpawnIdx = iSpawnIdx
-				break
-			} else if(iAttempt == 2)
-				break
+	new iRand = random(g_iTotalPoints - 1), iAttempts, iLast = g_iLastSpawnIndex[pPlayer]
+	do
+	{
+		iAttempts++
+		 /* && IsHullVacant(g_vecSpotOrigin[iRand], HULL_HUMAN, DONT_IGNORE_MONSTERS) */
+		if(iRand != iLast && !IsVectorZero(g_vecSpotOrigin[iRand]) && !CheckDistance(pPlayer, g_vecSpotOrigin[iRand]))
+		{
+			SetPlayerPosition(pPlayer, g_vecSpotOrigin[iRand], g_vecSpotVAngles[iRand])
+			g_iLastSpawnIndex[pPlayer] = iRand
+
+			return true
 		}
 
-		if(iSpawnIdx == (g_iTotalPoints - 1))
-			iSpawnIdx = random(g_iTotalPoints - 1)
-	}
+		if(++iRand >= g_iTotalPoints) {
+			iRand = random(g_iTotalPoints - 1)
+		}
 
-	if(iBestSpawnIdx == -1) {
-		g_iLastSpawnIndex[pPlayer] = -1
-		return false
-	}
+	} while(iAttempts <= g_iTotalPoints)
 
-	SetPlayerPosition(pPlayer, g_vecSpotOrigin[iBestSpawnIdx], g_vecSpotVAngles[iBestSpawnIdx])
-	g_iLastSpawnIndex[pPlayer] = iBestSpawnIdx
-
-	return true
+	return false
 }
 
-bool:CheckSpawn(const pPlayer, const iSpawnIdx, const iAttempt) {
-	if(IsVectorZero(g_vecSpotOrigin[iSpawnIdx]))
-		return false
-
-	if((iAttempt < 1) && CheckDistance(pPlayer, g_vecSpotOrigin[iSpawnIdx], 450.0))
-		return false
-
-	if((iAttempt < 2) && g_iLastSpawnIndex[pPlayer] == iSpawnIdx)
-		return false
-
-	if((iAttempt == 1) && CheckDistance(pPlayer, g_vecSpotOrigin[iSpawnIdx], 100.0))
-		return false
-
-	if(iAttempt == 2) // not found, use default spawn
-		return false
-
-	return true
-}
-
-bool:CheckDistance(const pPlayer, const Float:vecOrigin[coord_e], const Float:fDistance)
+bool:CheckDistance(const pPlayer, const Float:vecOrigin[coord_e])
 {
 	new pEntity = NULLENT
-	while((pEntity = FIND_ENT_IN_SPHERE(pEntity, vecOrigin, fDistance)))
+	while((pEntity = FIND_ENT_IN_SPHERE(pEntity, vecOrigin, MIN_SPAWN_RADIUS)))
 	{
 		if(IsPlayer(pEntity) && pEntity != pPlayer && get_entvar(pEntity, var_deadflag) == DEAD_NO) {
 			// server_print("Client %i fount! skip...", pEntity)
