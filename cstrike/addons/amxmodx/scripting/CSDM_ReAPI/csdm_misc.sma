@@ -144,7 +144,7 @@ public HandleMenu_ChooseTeam(const index, const MenuChooseTeam:slot)
 		set_member(index, m_bTeamChanged, false)
 
 	if(get_member(index, m_iTeam) != TEAM_SPECTATOR)
-		rg_internal_cmd(index, "joinclass", "5")
+		RequestFrame("SelectRandomAppearance", get_user_userid(index))
 }
 
 public ShowVGUIMenu_Pre(const index, VGUIMenu:menuType, const bitsSlots, szOldMenu[])
@@ -254,4 +254,11 @@ public hCMD_ResetScore(const pPlayer) {
 	client_print_color(pPlayer, print_team_grey, "^4[CSDM] %L", pPlayer, "CHAT_RESETSCORE")
 
 	return PLUGIN_HANDLED
+}
+
+public SelectRandomAppearance(data) {
+	new index = find_player("km", data);
+
+	if(index)
+		rg_internal_cmd(index, "joinclass", "5")
 }
