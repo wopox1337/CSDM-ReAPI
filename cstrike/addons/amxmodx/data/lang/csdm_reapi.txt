@@ -26,6 +26,20 @@ MENU_WILL_BE_OPENED = ^3Gun menu will be re-enabled next spawn.
 FREEBUYTIME_PASSED = %0.f seconds have passed. ^rYou can't buy anything now!
 CHAT_RESETSCORE = Your score has been reset!
 
+[pl]
+EQUIP_MENU = Wyposazenie
+NEW_WEAPONS = Nowa bron
+PREVIOUS_SETUP = Poprzedni zestaw
+DONT_SHOW_MENU_AGAIN = 2 + Nie pokazuj menu ponownie^n
+RANDOM_SELECTION = Wybor losowy
+ALWAYS_RANDOM = 4 + Nie pokazuj menu ponownie
+SECONDARY_WEAPONS = Bron dodatkowa
+PRIMARY_WEAPONS = Bron glowna
+CHAT_HELP_GUNS = ^3wpisz^1 guns^1 na czacie, aby otworzyc menu ponownie.
+MENU_WILL_BE_OPENED = ^3Menu broni otowrzy sie przy nastepnym odrodzeniu.
+FREEBUYTIME_PASSED = Minely %0.f sekund(y).^rNie mozesz teraz nic kupic!
+CHAT_RESETSCORE = Twoje statystyki zostaly zresetowane!
+
 [es]
 EQUIP_MENU = Menu de equipamiento
 NEW_WEAPONS = Nuevas armas
