@@ -204,7 +204,9 @@ public client_putinserver(pPlayer)
 {
 	g_iPreviousSecondary[pPlayer] = g_iStarterSecondary
 	g_iPreviousPrimary[pPlayer] = g_iStarterPrimary
-	g_bOpenMenu[pPlayer] = false
+
+	g_bOpenMenu[pPlayer] = (g_iStarterPrimary == INVALID_INDEX && g_iStarterSecondary == INVALID_INDEX)
+
 	g_bAlwaysRandom[pPlayer] = false
 	g_flPlayerBuyTime[pPlayer] = 0.0
 }
