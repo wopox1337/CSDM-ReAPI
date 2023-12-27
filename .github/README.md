@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/github/downloads/wopox1337/CSDM-ReAPI/total?label=Download%40latest&style=flat-square&logo=github&logoColor=white"
          alt="Build status">
     <a href="https://github.com/wopox1337/CSDM-ReAPI/actions">
-    <img src="https://img.shields.io/github/workflow/status/wopox1337/CSDM-ReAPI/CI/master?style=flat-square&logo=github&logoColor=white"
+    <img src="https://img.shields.io/github/actions/workflow/status/wopox1337/CSDM-ReAPI/CI.yml?branch=master&style=flat-square&logo=github&logoColor=white"
          alt="Build status">
     <a href="https://github.com/wopox1337/CSDM-ReAPI/releases">
     <img src="https://img.shields.io/github/v/release/wopox1337/CSDM-ReAPI?include_prereleases&style=flat-square&logo=github&logoColor=white"
