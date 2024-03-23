@@ -2,6 +2,13 @@
   <a href="https://github.com/wopox1337/CSDM-ReAPI/releases"><img src="https://user-images.githubusercontent.com/18553678/126974290-c1b301e7-6e8c-4b35-8e5e-440e9fe3ddc2.png" width="500px" alt="CSDM Reapi releases"></a>
 </h1>
 
+---
+> [!IMPORTANT]  
+> # ⚠️ Development and support for this mod has been discontinued.
+## Use a more modern version called [ReDeathmatch](https://github.com/ReDeathmatch/ReDeathmatch_AMXX).
+
+---
+
 <p align="center">AMXModX plugin for provide Deathmatch mode with rich functionality and API.</p>
 
 <p align="center">
@@ -37,7 +44,11 @@
 ---
 
 ## About
-- TODO
+This is an enhanced version of CSDM ReAPI by Vaqtincha, adding multilingual support and partially fixing the respawn system and minor bugs. It brings new functionality and improves integration with ReGameDLL by utilizing its updated features.
+
+Development of this version has been **⚠️ discontinued** by the author due to fundamental changes.
+
+Work on continuing the mod's concept is being done in [ReDeathmatch](https://github.com/ReDeathmatch/ReDeathmatch_AMXX).
 
 ## Requirements
 - HLDS installed;
